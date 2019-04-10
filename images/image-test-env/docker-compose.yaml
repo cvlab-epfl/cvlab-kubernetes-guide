@@ -4,7 +4,7 @@ services:
     image: "ic-registry.epfl.ch/cvlab/lis/lab-python-ml:cuda10"
     environment:
       CLUSTER_USER: "lis"
-      CLUSTER_USER_ID: "18574"
+      CLUSTER_USER_ID: "12345"
       CLUSTER_GROUP_NAME: "CVLAB-unit"
       CLUSTER_GROUP_ID: "11166"
       JUPYTER_CONFIG_DIR: "/cvlabdata2/home/lis/kubernetes_example/.jupyter"

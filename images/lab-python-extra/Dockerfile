@@ -1,17 +1,13 @@
-# Install python and its packages
-
+# Additional programs to install on top of the main image
+# start from the base image
 FROM ic-registry.epfl.ch/cvlab/lis/lab-python-ml:cuda10
 
-MAINTAINER Krzysztof Lis <krzysztof.lis@epfl.ch>
+# extra linux libraries
+RUN apt-get update \
+	&& apt-get install --no-install-recommends -y git \
+	&& apt-get clean
 
-# extra libraries
+# extra python libraries
 RUN pip --no-cache-dir install \
-	new_library
-
-# docker build -t ic-registry.epfl.ch/cvlab/lis/lab-python-extra:cuda10 lab-python-extra
-
-# docker built -t TAG_NAME DIRECTORY_WITH_DOCKERFILE
-# docker build -t ic-registry.epfl.ch/cvlab/lis/lab-python-extra:cuda10 .
-
-# docker push ic-registry.epfl.ch/cvlab/lis/lab-python-extra:cuda10
+	natsort jinja2 
 

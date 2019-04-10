@@ -14,7 +14,7 @@ RUN apt-get update \
 	&& apt-get clean
 
 RUN mkdir /opt/lab
-COPY setup.sh setup_and_run_command.sh setup_and_wait_forever.sh /opt/lab/
+COPY setup.sh setup_and_run_command.sh setup_and_wait.sh /opt/lab/
 COPY setup_steps /opt/lab/setup_steps
 
 ENV AUTO_SHUTDOWN_TIME 1h
