@@ -1,19 +1,24 @@
 
 # Kubernetes at CVLab
 
+Other resources on that topic:
+
+* <https://github.com/EPFL-IC/caas>
+* <https://github.com/epfml/kubernetes-setup>
+
 ## Overview
 
 Docker *containers* are the processses running on a docker host (that is our server). They use the same operating system as the host, but have their own internal file system and do no see the host's file system.
 
-*Images* are snapshots of that internal file system. For example we installed our libraries in a container and take a snapshot so that we can start new containers from the same base. Images can be made by saving a given containers file system, but usually are specified declaratively with [*Dockerfiles*](https://docs.docker.com/engine/reference/builder/).
+*Images* are snapshots of that internal file system. For example we installed our libraries in a container and take a snapshot so that we can start new containers from the same base. Images can be made by saving a given containers file system, but usually are specified declaratively with [Dockerfiles](https://docs.docker.com/engine/reference/builder/).
 
-[*Kubernetes*](https://kubernetes.io/) is a system that organizes running a big number of docker containers on a multi-machine cluster.
+[Kubernetes](https://kubernetes.io/) is a system that organizes running a big number of docker containers on a multi-machine cluster.
 
 ## Setup
 
 To communicate with the Kubernetes server, we need to:
 
-* [install *kubectl*](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+* [install kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 
 * get the config files from IC admins (`user.config`, `user.crt`, `user.key`), copy them to `~/.kube` and rename `user.config` to `config`.
 
