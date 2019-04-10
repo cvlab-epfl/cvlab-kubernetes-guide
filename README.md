@@ -7,6 +7,9 @@ Other resources on that topic:
 * <https://github.com/epfml/kubernetes-setup>
 * <https://github.com/kcyu2014/cvlab-kubernetes>
 
+If you find a mistake, something is not working, you know a better way to do it, 
+or you need a new image to be built, please contact me at *krzysztof.lis@epfl.ch*.
+
 ## Overview
 
 Docker *containers* are the processses running on a docker host (that is our server). They use the same operating system as the host, but have their own internal file system and do no see the host's file system.
@@ -14,6 +17,8 @@ Docker *containers* are the processses running on a docker host (that is our ser
 *Images* are snapshots of that internal file system. For example we installed our libraries in a container and take a snapshot so that we can start new containers from the same base. Images can be made by saving a given containers file system, but usually are specified declaratively with [Dockerfiles](https://docs.docker.com/engine/reference/builder/).
 
 [Kubernetes](https://kubernetes.io/) is a system that organizes running a big number of docker containers on a multi-machine cluster.
+The rationale is that Kubernetes will allocate resources when we need to run a job and release them later, leading to a more efficient usage than when machines are assigned to people - we do not pay for the resources when the jobs are not running.
+
 
 ## Setup
 
@@ -26,13 +31,14 @@ To communicate with the Kubernetes server, we need to:
 ## Pre-built images
 
 I made some base images that should be useful to everyone. It should be easy to start using those, without having to build custom images. 
+The user account setup is done through environment variables, so you do not have to place it in your Dockerfile.
 
-`ic-registry.epfl.ch/cvlab/lis/lab-python-ml:cuda10` contains CUDA, pytorch and tensorflow as well as commonly used packages.
+[`ic-registry.epfl.ch/cvlab/lis/lab-python-ml:cuda10`](./images/lab-python-ml/Dockerfile) contains CUDA, Pytorch, Tensorflow, OpenCV as well as other commonly used packages.
 If you need more, you can extend this and build your own image on top (Dockerfile `FROM`) or let me know that something needs adding.
 
-`ic-registry.epfl.ch/cvlab/lis/lab-base:cpu` is the base with just user account setup for cvlabdata mounting.
+[`ic-registry.epfl.ch/cvlab/lis/lab-base:cpu`](./images/lab-base/Dockerfile) is the base with just user account setup for cvlabdata mounting, the `:cuda10` version additionally has CUDA installed.
 
-The dockerfiles are [here](./images).
+More about images [here](./images).
 
 
 ## Defining your containers
@@ -238,3 +244,5 @@ Then we can open jupyter at localhost:8001.
 The password in the example config is `hello`.
 
 Alternatively a [load balancer](https://github.com/EPFL-IC/caas#step-three-accessing-pods-from-outside-of-the-cluster) can be used to make the container accessible through the network.
+
+
