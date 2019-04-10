@@ -1,20 +1,22 @@
 
 # Kubernetes at CVLab
 
+If you find a mistake, something is not working, you know a better way to do it, 
+or you need a new image to be built, please let me know or open an issue here.  
+*- Kris*
+
 Other resources on that topic:
 
 * <https://github.com/EPFL-IC/caas>
 * <https://github.com/epfml/kubernetes-setup>
 * <https://github.com/kcyu2014/cvlab-kubernetes>
 
-If you find a mistake, something is not working, you know a better way to do it, 
-or you need a new image to be built, please contact me at *krzysztof.lis@epfl.ch*.
 
 ## Overview
 
 Docker *containers* are the processses running on a docker host (that is our server). They use the same operating system as the host, but have their own internal file system and do no see the host's file system.
 
-*Images* are snapshots of that internal file system. For example we installed our libraries in a container and take a snapshot so that we can start new containers from the same base. Images can be made by saving a given containers file system, but usually are specified declaratively with [Dockerfiles](https://docs.docker.com/engine/reference/builder/).
+*Images* are snapshots of that internal file system. For example we installed our libraries in a container and take a snapshot so that we can start new containers from the same base. Images can be made by saving a given container's file system, but usually are specified declaratively with [Dockerfiles](https://docs.docker.com/engine/reference/builder/).
 
 [Kubernetes](https://kubernetes.io/) is a system that organizes running a big number of docker containers on a multi-machine cluster.
 The rationale is that Kubernetes will allocate resources when we need to run a job and release them later, leading to a more efficient usage than when machines are assigned to people - we do not pay for the resources when the jobs are not running.
@@ -93,6 +95,10 @@ To request a GPU, add this to the container:
           nvidia.com/gpu: 1 # requesting 1 GPU
 ```
 
+It may happen that the GPUs are all occupied, you can check how many are used:
+```
+kubectl describe quota --namespace=cvlab
+```
 
 ### External storage
 
