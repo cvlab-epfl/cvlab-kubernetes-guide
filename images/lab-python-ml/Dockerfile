@@ -28,12 +28,12 @@ RUN pip --no-cache-dir install \
 	torchvision tensorboardX
 
 # opencv
-# RUN pip --no-cache-dir install \
-# 	opencv-contrib-python-headless
+RUN pip --no-cache-dir install \
+	opencv-contrib-python-headless
 
 # tensorflow
-# RUN pip --no-cache-dir install \
-# 	tensorboard tensorflow-gpu
+RUN pip --no-cache-dir install \
+	tensorboard tensorflow-gpu
 
 # use shared cache for pytorch
 ENV TORCH_MODEL_ZOO /cvlabsrc1/cvlab/pytorch_model_zoo
