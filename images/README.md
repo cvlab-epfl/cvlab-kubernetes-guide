@@ -22,6 +22,8 @@ At the beginning, we say on top of which file we build:
 FROM base_image_tag
 ```
 
+Other common operations are:
+
 * run commands with `RUN`:
 ```
 RUN apt-get update \
@@ -41,7 +43,10 @@ COPY local_file /opt/lab/file_inside_image
 
 ### Existing images
 
-Check these example Dockerfiles for my images:
+You can view the existing images available in our repository at <https://ic-registry.epfl.ch/> (login to see CVLab's images).
+There are also many publicly available images at the [Docker Hub](https://hub.docker.com/search?q=&type=image).
+
+I prepared some images which will hopefully be of use to you (click to see Dockerfiles):
 
 #### lab-base
 [`ic-registry.epfl.ch/cvlab/lis/lab-base:cuda10`](./lab-base/Dockerfile)  
@@ -61,6 +66,7 @@ If you need additional software installed, please let me know, or create your ow
 ## Extending the image
 
 In case you want to extend the image, please see this example [lab-python-extra Dockerfile](./lab-python-extra/Dockerfile).
+Here we install libraries from the repositories, but it is possible to do much more.
 
 ```Dockerfile
 # start from the base image
@@ -76,7 +82,7 @@ RUN pip --no-cache-dir install \
 	natsort jinja2 
 ```
 
-Once your docker file is ready, build the image. Assuming it is in `lab-python-extra/Dockerfile`, the command is:
+Once your docker file is ready, build the image with [`docker build`](https://docs.docker.com/engine/reference/commandline/build/). Assuming it is in `lab-python-extra/Dockerfile`, the command is:
 ```
 docker build lab-python-extra -t ic-registry.epfl.ch/cvlab/my_user_name/something:label_name
 ```
@@ -94,14 +100,8 @@ docker push ic-registry.epfl.ch/cvlab/my_user_name/something:label_name
 
 Now you can use the image in your pods!
 
-#### Multi-step builds
+### Multi-stage builds
 
-
-
-<!-- # docker build -t ic-registry.epfl.ch/cvlab/lis/lab-python-extra:cuda10 lab-python-extra
-
-# docker built -t TAG_NAME DIRECTORY_WITH_DOCKERFILE
-# docker build -t ic-registry.epfl.ch/cvlab/lis/lab-python-extra:cuda10 .
-
-# docker push ic-registry.epfl.ch/cvlab/lis/lab-python-extra:cuda10 -->
-
+If your software needs to be compiled, you may benefit from [multi-stage builds](https://docs.docker.com/develop/develop-images/multistage-build/):
+this involves creating a temporary container with the build tools where the compilation takes place, then we only copy the results of the compilation to the output image.
+This saves space in the output image and allows the build process to be cached.
