@@ -17,4 +17,7 @@ RUN mkdir /opt/lab
 COPY setup.sh setup_and_run_command.sh setup_and_wait_forever.sh /opt/lab/
 COPY setup_steps /opt/lab/setup_steps
 
-CMD ["/opt/lab/setup_and_wait_forever.sh"]
+ENV AUTO_SHUTDOWN_TIME 1h
+CMD ["/opt/lab/setup_and_wait.sh"]
+
+

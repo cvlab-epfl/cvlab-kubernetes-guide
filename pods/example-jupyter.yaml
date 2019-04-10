@@ -3,10 +3,11 @@ kind: Pod
 metadata:
   name: username-example-jupyter
 spec:
+  restartPolicy: Never
   containers:
     - name: jupyter-server
       image: ic-registry.epfl.ch/cvlab/lis/lab-python-ml:cuda10
-      #command: ["/opt/lab/setup_and_wait_forever.sh"] 
+      #command: ["/opt/lab/setup_and_wait.sh"] 
       #   this one will do nothing and wait, so you can enter the container yourself with
       #   kubectl exec -it pod_name /bin/bash
       
@@ -30,8 +31,6 @@ spec:
         value: "/cvlabdata2/home/lis/kubernetes_example/.jupyter"
 
       ports:
-        - containerPort: 22
-          name: ssh
         - containerPort: 8888
           name: jupyter
           

@@ -5,6 +5,7 @@ Other resources on that topic:
 
 * <https://github.com/EPFL-IC/caas>
 * <https://github.com/epfml/kubernetes-setup>
+* <https://github.com/kcyu2014/cvlab-kubernetes>
 
 ## Overview
 
@@ -50,11 +51,18 @@ Then we say what containers should be running in that pod, most importantly what
 
 ```yaml
 spec:
+  restartPolicy: Never # once it finishes, do not restart
   containers:
     - name: base-test
       image: ic-registry.epfl.ch/cvlab/lis/lab-base:cpu
       command: ["/opt/lab/setup_and_wait_forever.sh"] 
 ```
+
+We set the [`restartPolicy`](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy)
+to `Never` so that once the job is finished, it releases the resources and does not restart.
+By default, Kubernetes restarts containers when they finish.
+We could also use a Kubernetes [Job](https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/).
+
 
 Futher we specify the environment variables, for example:
 
@@ -78,7 +86,7 @@ To request a GPU, add this to the container:
         limits:
           nvidia.com/gpu: 1 # requesting 1 GPU
 ```
-I could not test it though because the GPUs were occupied.
+
 
 ### External storage
 
@@ -145,21 +153,21 @@ The `command` field specifies the program to run when the container starts. Also
 Therefore, if we want the container to wait and let us connect to it, we can specify the command as:
 
 ```yaml
-command: ["sleep", "infinity"]
+command: ["sleep", "1h"]
 ```
 
 or if you are using my premade images:
 ```yaml
-# sets up the user accound and then waits
-command: ["/opt/lab/setup_and_wait_forever.sh"]
+# sets up the user account and then waits for the time specified in $AUTO_SHUTDOWN_TIME
+command: ["/opt/lab/setup_and_wait.sh"]
 ```
 
-Please remember that this will run and occupy the resources until you explicitly delete the pod.
+Please remember that this will run and occupy the resources until you explicitly delete the pod or the time runs out.
 
 
 For example running a python program:
 ```yaml
-command: ["python", "some_program.py"]
+command: ["python", "some_program.py", "--option", "val"]
 ```
 
 In the premade images with user setup:
@@ -188,6 +196,7 @@ We list, start and stop pods using the *kubectl* command
 * `kubectl delete pod pod_name` - delete your pod (make sure you delete containers you don't use anymore)
 * `kubectl describe pod pod_name` - show information about a pod, including the output logs, useful to diagnose why it isn't working.
 * `kubectl logs pod_name` - output logs from a pod
+* `kubectl describe quota --namespace=cvlab` - show how many GPUs are used
 
 Once a pod is running, we can connect to it and run commands inside:
 ```
@@ -201,7 +210,6 @@ su youruser -c /bin/bash
 
 
 
-
 ## Network communication - port forwarding
 
 See the example [pod configuration for jupyter](./pods/example-jupyter.yaml).
@@ -209,8 +217,6 @@ To connect to our container over the network, first we need to expose the ports 
 
 ```yaml
 ports:
-- containerPort: 22
-  name: ssh
 - containerPort: 8888
   name: jupyter
 ```
