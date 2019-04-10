@@ -1,0 +1,25 @@
+version: '3'
+services:
+  test_jupyter:
+    image: "ic-registry.epfl.ch/cvlab/lis/lab-python-ml:cuda10"
+    environment:
+      CLUSTER_USER: "lis"
+      CLUSTER_USER_ID: "18574"
+      CLUSTER_GROUP_NAME: "CVLAB-unit"
+      CLUSTER_GROUP_ID: "11166"
+      JUPYTER_CONFIG_DIR: "/cvlabdata2/home/lis/kubernetes_example/.jupyter"
+    ports:
+      - "7123:8888"
+
+    volumes:
+      - ./cvlabdata1:/cvlabdata1
+      - ./cvlabdata2:/cvlabdata2
+      - ./cvlabsrc1:/cvlabsrc1
+
+    command:
+      - "/opt/lab/setup_and_run_command.sh"
+      - "jupyter lab --ip=0.0.0.0 --no-browser --notebook-dir=/cvlabdata2/home/lis/kubernetes_example"
+    # command:
+    #   - "/opt/lab/setup_and_run_command.sh"
+    #   - "cd /cvlabdata2/home/lis/kubernetes_example && python job_example.py"
+    

@@ -1,0 +1,23 @@
+{
+  "ExecuteTime": {
+    "display_right_aligned": true
+  },
+  "load_extensions": {
+    "search-replace/main": true,
+    "dragdrop/main": true,
+    "autoscroll/main": true,
+    "execute_time/ExecuteTime": true,
+    "codefolding/main": true,
+    "nbextensions_configurator/config_menu/main": true,
+    "contrib_nbextensions_help_item/main": true,
+    "keyboard_shortcut_editor/main": true,
+    "jupyter-js-widgets/extension": true
+  },
+  "CodeCell": {
+    "cm_config": {
+      "indentWithTabs": true,
+      "indentUnit": 4,
+      "killTrailingSpace": true
+    }
+  }
+}

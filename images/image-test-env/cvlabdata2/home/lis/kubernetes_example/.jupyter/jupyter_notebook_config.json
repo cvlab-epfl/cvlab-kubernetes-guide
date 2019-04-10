@@ -1,0 +1,10 @@
+{
+  "NotebookApp": {
+    "server_extensions": [
+    ],
+    "nbserver_extensions": {
+      "jupyterlab": true
+    },
+    "password": "sha1:412a2d09a151:0ffc346bf99a04188ddac8dfe409c22295810970"
+  }
+}

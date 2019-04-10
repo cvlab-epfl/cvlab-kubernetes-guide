@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "Exporter": {
+    "preprocessors": [
+      "jupyter_contrib_nbextensions.nbconvert_support.CodeFoldingPreprocessor",
+      "jupyter_contrib_nbextensions.nbconvert_support.PyMarkdownPreprocessor"
+    ],
+    "template_path": [
+      ".",
+      "/usr/local/lib/python3.5/dist-packages/jupyter_contrib_nbextensions/templates"
+    ]
+  }
+}
