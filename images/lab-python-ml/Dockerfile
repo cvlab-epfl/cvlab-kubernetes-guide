@@ -38,4 +38,6 @@ RUN pip --no-cache-dir install \
 RUN pip --no-cache-dir install \
 	tensorboard tensorflow-gpu
 # lets tf find libcuda
-ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/usr/local/cuda/compat
+# this is actually wrong and makes python fail to see the GPU
+# libcuda is available on GPU servers, but not on the machine the images were tested on
+#ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/usr/local/cuda/compat
