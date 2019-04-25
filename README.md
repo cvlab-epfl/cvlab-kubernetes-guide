@@ -204,6 +204,7 @@ You can run those examples in `/cvlabdata2/home/lis/kubernetes_example`, I will 
 We list, start and stop pods using the *kubectl* command
 
 * `kubectl get pods` - list pods which currently exist
+* `kubectl get pods --field-selector=status.phase=Running` - list pods which are currently running
 * `kubectl create -f pod_definition_file.yaml` - create a new pod according to your specification
 * `kubectl delete pod pod_name` - delete your pod (make sure you delete containers you don't use anymore)
 * `kubectl describe pod pod_name` - show information about a pod, including the output logs, useful to diagnose why it isn't working.
