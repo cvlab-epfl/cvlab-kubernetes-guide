@@ -250,6 +250,10 @@ kubectl port-forward lis-example 8001:8888
 Then we can open jupyter at localhost:8001.
 The password in the example config is `hello`.
 
+To shut down jupyter (and the container with it) from the web interface:
+* JupyterLab: select *File -> Quit* from the menu in the top-left
+* Jupyter Notebook: press the *Quit* button in the top right
+
 Alternatively a [load balancer](https://github.com/EPFL-IC/caas#step-three-accessing-pods-from-outside-of-the-cluster) can be used to make the container accessible through the network.
 
 
