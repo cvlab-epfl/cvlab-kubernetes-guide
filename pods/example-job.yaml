@@ -4,6 +4,7 @@ metadata:
   name: username-example-job
   labels:
     user: set-your-username
+    priority: "1"
 spec:
   restartPolicy: Never
   containers:

@@ -6,7 +6,6 @@ MAINTAINER Krzysztof Lis <krzysztof.lis@epfl.ch>
 # python and hdf5
 RUN apt-get update \
 	&& apt-get install --no-install-recommends -y python3 python3-pip \
-		python3-dev build-essential \
 		hdf5-tools h5utils \
 		libgomp1 \ 
 	&& apt-get clean \
@@ -23,7 +22,7 @@ RUN pip --no-cache-dir install \
 	matplotlib seaborn \
 	imageio h5py \
 	ipython jupyterlab \
-	pyyaml easydict cython
+	pyyaml easydict natsort
 
 RUN pip --no-cache-dir install pycocotools
 
@@ -34,6 +33,7 @@ RUN pip --no-cache-dir install \
 # pytorch
 # use shared cache for pytorch
 ENV TORCH_MODEL_ZOO /cvlabsrc1/cvlab/pytorch_model_zoo 
+ENV TORCH_HOME /cvlabsrc1/cvlab/pytorch_model_zoo 
 RUN pip --no-cache-dir install \
 	https://download.pytorch.org/whl/cu100/torch-1.1.0-cp36-cp36m-linux_x86_64.whl \
 	torchvision tensorboardX

@@ -239,7 +239,17 @@ kubectl logs pod_name
 
 ## Resource allocation in CVLAB
 
+We want to ensure that everyone can use at least one GPU.
+We order the jobs and the position in the queue will decide which jobs will be allowed to run in case we have more requests than available resources.
 
+* A job using one person's 1st GPU has precedence over any person's 2nd GPU job. A 2nd GPU job is above any 3rd GPU job and so on.
+* Among the jobs of a single user, we order them according to user-set priority (in the label `priority`) with higher numbers being more important: priority `+1` is before priority `-1`, the default is 0.
+If priority is equal, the earlier job takes precedence.
+
+The queue is displayed at <http://iccvlabsrv13.iccluster.epfl.ch:5336/>.
+If all of the 30 GPUs are occupied, and you want to run your **1st** job, you can kill the last job in the queue. In that case please notify the owner.
+
+Please remember to specify your user name and priority in the pod config.
 ```yaml
 metadata:
   name: username-example-test
@@ -247,7 +257,6 @@ metadata:
     user: your-username
     priority: "1" # job with higher priority number takes precedence
 ```
-
 
 ## Running multiple experiments in one container
 The GPUs in the Kubernetes cluster usually have `32GB` of memory, so compared to the previous 12GB GPUs, they should be capable of running 2 or 3 experiments of usual size at once.
@@ -265,8 +274,6 @@ bash task_3.sh &
 # the container will finish when the last one finishes
 wait
 ```
-
-
 
 ## Network communication - port forwarding
 
