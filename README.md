@@ -50,9 +50,13 @@ We tell Kubernetes to run our containers by creating Pods. A [pod](https://kuber
 An example pod file is shown in [pods/example-test.yaml](./pods/example-test.yaml).
 
 First we specify the name of the pod - we will use this name to refer to it by different commands. 
+Please also provide your user name and desired priority of the job, these are used for resource allocation.
 ```yaml
 metadata:
   name: username-example-test
+  labels:
+    user: your-username
+    priority: "1" # job with higher priority number takes precedence
 ```
 
 Then we say what containers should be running in that pod, most importantly what image to start from and what command to run.
@@ -207,10 +211,11 @@ We list, start and stop pods using the *kubectl* command
 * `kubectl get pods --field-selector=status.phase=Running` - list pods which are currently running
 * `kubectl create -f pod_definition_file.yaml` - create a new pod according to your specification
 * `kubectl delete pod pod_name` - delete your pod (make sure you delete containers you don't use anymore)
-* `kubectl describe pod pod_name` - show information about a pod, including the output logs, useful to diagnose why it isn't working.
+* `kubectl describe pods/pod_name` - show information about a pod, including the output logs, useful to diagnose why it isn't working.
 * `kubectl logs pod_name` - output logs from a pod
 * `kubectl describe quota --namespace=cvlab` - show how many GPUs are used
 
+#### Connecting an interactive console to the container
 Once a pod is running, we can connect to it and run commands inside:
 ```
 kubectl exec -it pod_name -- /bin/bash
@@ -219,6 +224,46 @@ kubectl exec -it pod_name -- /bin/bash
 This will be executed as the `root` user, so switch to your user which can write on cvlab drives:
 ```
 su youruser -c /bin/bash
+```
+
+#### Diagnosing problems
+If the job is not running as intended, you can see its status:
+```
+kubectl describe pod/pod_name
+```
+and check for errors by viewing the the output of your process:
+```
+kubectl logs pod_name
+```
+
+
+## Resource allocation in CVLAB
+
+
+```yaml
+metadata:
+  name: username-example-test
+  labels:
+    user: your-username
+    priority: "1" # job with higher priority number takes precedence
+```
+
+
+## Running multiple experiments in one container
+The GPUs in the Kubernetes cluster usually have `32GB` of memory, so compared to the previous 12GB GPUs, they should be capable of running 2 or 3 experiments of usual size at once.
+
+The script below shows a simple way to run several experiments at once.
+The commands will run in parallel, the container will finish when the last one finishes.
+
+
+```bash
+# my_job.sh
+python task_1.py &
+python task_2.py &
+bash task_3.sh &
+# the jobs will run in parallel
+# the container will finish when the last one finishes
+wait
 ```
 
 
