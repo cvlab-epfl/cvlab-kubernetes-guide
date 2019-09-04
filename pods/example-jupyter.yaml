@@ -43,6 +43,8 @@ spec:
           name: cvlabdata1
         - mountPath: /cvlabdata2
           name: cvlabdata2
+        - mountPath: /dev/shm
+          name: dshm
 
       # specify that it uses a GPU!
       # resources:
@@ -61,3 +63,9 @@ spec:
     - name: cvlabdata2
       persistentVolumeClaim:
         claimName: pv-cvlabdata2
+
+    # shared memory, often needed by PyTorch dataloaders
+    - name: dshm
+      emptyDir:
+        medium: Memory
+        sizeLimit: 8Gi
