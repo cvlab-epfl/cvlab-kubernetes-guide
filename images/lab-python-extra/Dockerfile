@@ -4,10 +4,15 @@ FROM ic-registry.epfl.ch/cvlab/lis/lab-python-ml:cuda10
 
 # extra linux libraries
 RUN apt-get update \
-	&& apt-get install --no-install-recommends -y git python3-dev build-essential  \
+	&& apt-get install --no-install-recommends -y python3-dev build-essential  \
 	&& apt-get clean
 
 # extra python libraries
 RUN pip --no-cache-dir install \
-	natsort jinja2 cython
+	cython \
+	jinja2
+
+# which need cython
+RUN pip --no-cache-dir install \
+	pycocotools gpustat
 

@@ -3,28 +3,33 @@
 FROM  ic-registry.epfl.ch/cvlab/lis/lab-base:cuda10
 MAINTAINER Krzysztof Lis <krzysztof.lis@epfl.ch>
 
-# python and hdf5
+# python, hdf5, codecs for imageio
 RUN apt-get update \
-	&& apt-get install --no-install-recommends -y python3 python3-pip \
+	&& apt-get install --no-install-recommends -y \
+		python3 python3-pip \
 		hdf5-tools h5utils \
-		libgomp1 \ 
+		libgomp1 \
+		libfreeimageplus3 \
 	&& apt-get clean \
 	&& ln -s /usr/bin/python3 /usr/local/bin/python \
 	&& ln -s /usr/bin/pip3 /usr/local/bin/pip 
 
 # core
-RUN pip --no-cache-dir install setuptools wheel virtualenv
+RUN pip --no-cache-dir install \
+	setuptools wheel virtualenv
 
 # main
 RUN pip --no-cache-dir install \
-	click tqdm \
 	numpy scipy scikit-image scikit-learn \
 	matplotlib seaborn \
-	imageio h5py \
-	ipython jupyterlab \
-	pyyaml easydict natsort
+	imageio h5py
 
-RUN pip --no-cache-dir install pycocotools
+RUN pip --no-cache-dir install \
+	ipython jupyterlab \
+	click tqdm \
+	einops docopt \
+	pyyaml easydict \
+	xonsh
 
 # opencv
 RUN pip --no-cache-dir install \
@@ -32,10 +37,10 @@ RUN pip --no-cache-dir install \
 
 # pytorch
 # use shared cache for pytorch
-ENV TORCH_MODEL_ZOO /cvlabsrc1/cvlab/pytorch_model_zoo 
+ENV TORCH_MODEL_ZOO /cvlabsrc1/cvlab/pytorch_model_zoo/models
 ENV TORCH_HOME /cvlabsrc1/cvlab/pytorch_model_zoo 
 RUN pip --no-cache-dir install \
-	https://download.pytorch.org/whl/cu100/torch-1.1.0-cp36-cp36m-linux_x86_64.whl \
+	torch \
 	torchvision tensorboardX
 
 # tensorflow

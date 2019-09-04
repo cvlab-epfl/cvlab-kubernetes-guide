@@ -246,7 +246,7 @@ We order the jobs and the position in the queue will decide which jobs will be a
 * Among the jobs of a single user, we order them according to user-set priority (in the label `priority`) with higher numbers being more important: priority `+1` is before priority `-1`, the default is 0.
 If priority is equal, the earlier job takes precedence.
 
-The queue is displayed at <http://iccvlabsrv13.iccluster.epfl.ch:5336/>.
+The queue is displayed at <http://iccvlabsrv13.iccluster.epfl.ch:5336/>.  
 If all of the 30 GPUs are occupied, and you want to run your **1st** job, you can kill the last job in the queue. In that case please notify the owner.
 
 Please remember to specify your user name and priority in the pod config.
