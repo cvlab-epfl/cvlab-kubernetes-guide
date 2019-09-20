@@ -1,6 +1,6 @@
 # Install python and its packages
 
-FROM  ic-registry.epfl.ch/cvlab/lis/lab-base:cuda10
+FROM  ic-registry.epfl.ch/cvlab/lis/lab-base:cuda10-devel
 MAINTAINER Krzysztof Lis <krzysztof.lis@epfl.ch>
 
 # python, hdf5, codecs for imageio
@@ -8,7 +8,7 @@ RUN apt-get update \
 	&& apt-get install --no-install-recommends -y \
 		python3 python3-pip \
 		hdf5-tools h5utils \
-		libgomp1 \
+		libgomp1 ninja-build \
 	&& apt-get clean \
 	&& ln -s /usr/bin/python3 /usr/local/bin/python \
 	&& ln -s /usr/bin/pip3 /usr/local/bin/pip 
@@ -20,7 +20,7 @@ RUN pip --no-cache-dir install \
 # main
 RUN pip --no-cache-dir install \
 	numpy scipy scikit-image scikit-learn \
-	matplotlib seaborn \
+	matplotlib \
 	imageio h5py
 
 RUN python -c "import imageio; imageio.plugins.freeimage.download()"
@@ -46,10 +46,5 @@ RUN pip --no-cache-dir install \
 	future
 # future is for caffe2 / torch.tensorboard
 
-# tensorflow
-RUN pip --no-cache-dir install \
-	tensorboard tensorflow-gpu
-# lets tf find libcuda
-# this is actually wrong and makes python fail to see the GPU
-# libcuda is available on GPU servers, but not on the machine the images were tested on
-#ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/usr/local/cuda/compat
+RUN apt-get install --no-install-recommends -y python3-dev \
+	&& apt-get clean

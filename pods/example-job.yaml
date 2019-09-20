@@ -10,6 +10,7 @@ spec:
   containers:
     - name: perform-job
       image: ic-registry.epfl.ch/cvlab/lis/lab-python-ml:cuda10
+      imagePullPolicy: Always # load the newest version of the image
       #command: ["/opt/lab/setup_and_wait.sh"] 
       #   this one will do nothing and wait, so you can enter the container yourself with
       #   kubectl exec -it pod_name /bin/bash
