@@ -6,7 +6,7 @@ MAINTAINER Krzysztof Lis <krzysztof.lis@epfl.ch>
 # python, hdf5, codecs for imageio
 RUN apt-get update \
 	&& apt-get install --no-install-recommends -y \
-		python3 python3-pip \
+		python3 python3-dev python3-pip \
 		hdf5-tools h5utils \
 		libgomp1 ninja-build \
 	&& apt-get clean \
@@ -14,8 +14,8 @@ RUN apt-get update \
 	&& ln -s /usr/bin/pip3 /usr/local/bin/pip 
 
 # core
-RUN pip --no-cache-dir install \
-	setuptools wheel virtualenv
+RUN pip --no-cache-dir install --upgrade \
+	setuptools wheel virtualenv pip
 
 # main
 RUN pip --no-cache-dir install \
@@ -41,10 +41,9 @@ RUN pip --no-cache-dir install \
 ENV TORCH_MODEL_ZOO /cvlabsrc1/cvlab/pytorch_model_zoo/models
 ENV TORCH_HOME /cvlabsrc1/cvlab/pytorch_model_zoo 
 RUN pip --no-cache-dir install \
-	torch \
-	torchvision \
-	future
+	torch torchvision \
+	future tensorboard
 # future is for caffe2 / torch.tensorboard
 
-RUN apt-get install --no-install-recommends -y python3-dev \
-	&& apt-get clean
+RUN pip --no-cache-dir install \
+	line-profiler numba
