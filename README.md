@@ -42,6 +42,7 @@ If you need more, you can extend this and build your own image on top (Dockerfil
 
 [`ic-registry.epfl.ch/cvlab/lis/lab-pytorch-apex:latest`](./images/lab-pytorch-apex/Dockerfile) has PyTorch with the [apex](https://github.com/NVIDIA/apex) multi-precision library.
 Additionally, it is based on the CUDA development image (has `nvcc`), so you can build CUDA extensions here.
+More about apex: [PyTorch half-precision](doc/PyTorchHalfPrecision.md).
 
 More about images [here](./images).
 
