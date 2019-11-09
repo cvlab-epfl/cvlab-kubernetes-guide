@@ -1,6 +1,6 @@
 # Install python and its packages
 
-FROM  ic-registry.epfl.ch/cvlab/lis/lab-base:cuda10-devel
+FROM  ic-registry.epfl.ch/cvlab/lis/lab-base:cuda10.1-devel
 MAINTAINER Krzysztof Lis <krzysztof.lis@epfl.ch>
 
 # python, hdf5, codecs for imageio
@@ -17,20 +17,25 @@ RUN apt-get update \
 RUN pip --no-cache-dir install --upgrade \
 	setuptools wheel virtualenv pip
 
-# main
+# scientific
 RUN pip --no-cache-dir install \
 	numpy scipy scikit-image scikit-learn \
 	matplotlib \
-	imageio h5py
+	imageio h5py \
+	einops \
+	cython numba
+
+# interactive
+RUN pip --no-cache-dir install \
+	ipython jupyterlab line-profiler \
+	click tqdm \
+	docopt \
+	pyyaml easydict natsort \
+	xonsh \
+	gpustat \
+	pycocotools
 
 RUN python -c "import imageio; imageio.plugins.freeimage.download()"
-
-RUN pip --no-cache-dir install \
-	ipython jupyterlab \
-	click tqdm \
-	einops docopt \
-	pyyaml easydict natsort \
-	xonsh
 
 # opencv
 RUN pip --no-cache-dir install \
@@ -40,10 +45,10 @@ RUN pip --no-cache-dir install \
 # use shared cache for pytorch
 ENV TORCH_MODEL_ZOO /cvlabsrc1/cvlab/pytorch_model_zoo/models
 ENV TORCH_HOME /cvlabsrc1/cvlab/pytorch_model_zoo 
+
 RUN pip --no-cache-dir install \
-	torch torchvision \
+	torch \
+	torchvision \
 	future tensorboard
 # future is for caffe2 / torch.tensorboard
 
-RUN pip --no-cache-dir install \
-	line-profiler numba
