@@ -1,6 +1,8 @@
 # Install python and its packages
 
-FROM  ic-registry.epfl.ch/cvlab/lis/lab-pytorch-cuda-ext:latest
+ARG BASE_IMG
+FROM ${BASE_IMG}
+# FROM  ic-registry.epfl.ch/cvlab/lis/lab-pytorch-cuda-ext:latest
 MAINTAINER Krzysztof Lis <krzysztof.lis@epfl.ch>
 
 

@@ -1,6 +1,8 @@
 # Install python and its packages
 
-FROM  ic-registry.epfl.ch/cvlab/lis/lab-base:cuda10.1-devel
+ARG BASE_IMG
+FROM ${BASE_IMG}
+# FROM  ic-registry.epfl.ch/cvlab/lis/lab-base:cuda10.1-devel
 MAINTAINER Krzysztof Lis <krzysztof.lis@epfl.ch>
 
 # python, hdf5, codecs for imageio
