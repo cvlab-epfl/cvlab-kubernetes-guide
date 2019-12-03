@@ -35,14 +35,14 @@ To communicate with the Kubernetes server, we need to:
 I made some base images that should be useful to everyone. It should be easy to start using those, without having to build custom images. 
 The user account setup is done through environment variables, so you do not have to place it in your Dockerfile.
 
-[`ic-registry.epfl.ch/cvlab/lis/lab-python-ml:cuda10`](./images/lab-python-ml/Dockerfile) contains CUDA, PyTorch, Tensorflow, OpenCV as well as other commonly used packages.
-If you need more, you can extend this and build your own image on top (Dockerfile `FROM`) or let me know that something needs adding.
-
-[`ic-registry.epfl.ch/cvlab/lis/lab-base:cpu`](./images/lab-base/Dockerfile) is the base with just user account setup for cvlabdata mounting, the `:cuda10` version additionally has CUDA installed.
-
 [`ic-registry.epfl.ch/cvlab/lis/lab-pytorch-apex:latest`](./images/lab-pytorch-apex/Dockerfile) has PyTorch with the [apex](https://github.com/NVIDIA/apex) multi-precision library.
 Additionally, it is based on the CUDA development image (has `nvcc`), so you can build CUDA extensions here.
 More about apex: [PyTorch half-precision](doc/PyTorchHalfPrecision.md).
+
+[`ic-registry.epfl.ch/cvlab/lis/lab-python-ml:latest`](./images/lab-python-ml/Dockerfile) contains CUDA, PyTorch, Tensorflow, OpenCV as well as other commonly used packages.
+If you need more, you can extend this and build your own image on top (Dockerfile `FROM`) or let me know that something needs adding.
+
+[`ic-registry.epfl.ch/cvlab/lis/lab-base:cpu`](./images/lab-base/Dockerfile) is the base with just user account setup for cvlabdata mounting, the `:cuda10` version additionally has CUDA installed.
 
 More about images [here](./images).
 
