@@ -23,13 +23,14 @@ RUN apt update && apt-get install -y \
 	libceres-dev \
 	libglew-dev \
 	qtbase5-dev libqt5opengl5-dev \
+	unzip \
 	&& apt-get clean
 
 RUN mkdir /tmp/colmap-build
-COPY 3.6-dev.2.tar.gz /tmp/colmap-build/colmap_src.tar.gz
+COPY colmap-dev.zip /tmp/colmap-build/colmap-dev.zip
 RUN cd /tmp/colmap-build \
-	&& tar xf colmap_src.tar.gz \
-	&& cd colmap-3.6-dev.2 \
+	&& unzip colmap-dev.zip \
+	&& cd colmap-dev \
 	&& mkdir build \
 	&& cd build \
 	&& cmake .. \
