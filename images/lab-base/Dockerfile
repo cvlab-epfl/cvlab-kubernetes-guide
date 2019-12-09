@@ -12,6 +12,7 @@ RUN sed 's@archive.ubuntu.com@ubuntu.ethz.ch@' -i /etc/apt/sources.list \
 		mc less vim git fish \
 		curl wget \
 		p7zip-full \
+		cmake \
 	&& apt-get clean
 
 RUN mkdir /opt/lab
