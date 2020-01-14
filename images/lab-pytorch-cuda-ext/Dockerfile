@@ -25,6 +25,7 @@ RUN pip --no-cache-dir install \
 	matplotlib \
 	imageio h5py \
 	einops \
+	pandas \
 	cython numba
 
 # interactive
