@@ -207,6 +207,13 @@ command:
 
 You can run those examples in `/cvlabdata2/home/lis/kubernetes_example`, I will clear it out periodically.
 
+#### Timeout
+
+If a process does not finish by itself, I recommend limiting its lifetime with [timeout](https://www.tecmint.com/run-linux-command-with-time-limit-and-timeout/). The following command will automatically shut down Jupyter after 4 hours:
+```
+timeout 4h jupyter lab --ip=0.0.0.0 --no-browser --notebook-dir=/cvlabdata2/home/lis/kubernetes_example"
+```
+
 ## Running the containers
 
 We list, start and stop pods using the *kubectl* command
@@ -309,6 +316,11 @@ The password in the example config is `hello`.
 To shut down jupyter (and the container with it) from the web interface:
 * JupyterLab: select *File -> Quit* from the menu in the top-left
 * Jupyter Notebook: press the *Quit* button in the top right
+
+Jupyter will run forever if we do not close it. Therefore I recommend limiting it with [timeout](https://www.tecmint.com/run-linux-command-with-time-limit-and-timeout/). The following command will automatically shut down Jupyter after 4 hours:
+```
+timeout 4h jupyter lab --ip=0.0.0.0 --no-browser --notebook-dir=/cvlabdata2/home/lis/kubernetes_example"
+```
 
 Alternatively a [load balancer](https://github.com/EPFL-IC/caas#step-three-accessing-pods-from-outside-of-the-cluster) can be used to make the container accessible through the network.
 

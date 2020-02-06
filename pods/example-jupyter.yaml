@@ -17,8 +17,9 @@ spec:
       
       command:
       - "/opt/lab/setup_and_run_command.sh"
-      - "jupyter lab --ip=0.0.0.0 --no-browser --notebook-dir=/cvlabdata2/home/lis/kubernetes_example"
+      - "timeout 4h jupyter lab --ip=0.0.0.0 --no-browser --notebook-dir=/cvlabdata2/home/lis/kubernetes_example"
       # runs the command on the 2nd line
+      # timeout will ensure this dies after some time, so we don't risk leaving it running forever
 
       env:
       - name: CLUSTER_USER
