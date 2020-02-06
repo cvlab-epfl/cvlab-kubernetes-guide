@@ -19,6 +19,14 @@ docker build lab-python-ml \
 # docker push ic-registry.epfl.ch/cvlab/lis/lab-pytorch-apex:latest
 # docker push ic-registry.epfl.ch/cvlab/lis/lab-python-ml:latest
 
-docker tag ic-registry.epfl.ch/cvlab/lis/lab-python-ml:latest ic-registry.epfl.ch/cvlab/lis/lab-python-ml:cuda10.1-pytorch1.3.0-tf2.0.0
+docker tag ic-registry.epfl.ch/cvlab/lis/lab-pytorch-cuda-ext:latest ic-registry.epfl.ch/cvlab/lis/lab-pytorch-cuda-ext:cuda10.1-pytorch1.4.0
+docker tag ic-registry.epfl.ch/cvlab/lis/lab-pytorch-apex:latest ic-registry.epfl.ch/cvlab/lis/lab-pytorch-apex:cuda10.1-pytorch1.4.0
+docker tag ic-registry.epfl.ch/cvlab/lis/lab-python-ml:latest ic-registry.epfl.ch/cvlab/lis/lab-python-ml:cuda10.1-pytorch1.4.0-tf2.1.0
 
+docker push ic-registry.epfl.ch/cvlab/lis/lab-pytorch-cuda-ext:cuda10.1-pytorch1.4.0
+docker push ic-registry.epfl.ch/cvlab/lis/lab-pytorch-cuda-ext:latest 
+docker push ic-registry.epfl.ch/cvlab/lis/lab-pytorch-apex:latest
+docker push ic-registry.epfl.ch/cvlab/lis/lab-pytorch-apex:cuda10.1-pytorch1.4.0
+docker push ic-registry.epfl.ch/cvlab/lis/lab-python-ml:latest 
+docker push ic-registry.epfl.ch/cvlab/lis/lab-python-ml:cuda10.1-pytorch1.4.0-tf2.1.0
 

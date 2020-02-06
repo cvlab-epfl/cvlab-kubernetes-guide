@@ -27,9 +27,10 @@ RUN apt update && apt-get install -y \
 	&& apt-get clean
 
 RUN mkdir /tmp/colmap-build
-COPY colmap-dev.zip /tmp/colmap-build/colmap-dev.zip
+COPY colmap-3.6-dev.3.zip /tmp/colmap-build/colmap-dev.zip
 RUN cd /tmp/colmap-build \
 	&& unzip colmap-dev.zip \
+	&& mv colmap-3.6-dev.3 colmap-dev \
 	&& cd colmap-dev \
 	&& mkdir build \
 	&& cd build \

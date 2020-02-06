@@ -22,7 +22,7 @@ RUN pip --no-cache-dir install --upgrade \
 # scientific
 RUN pip --no-cache-dir install \
 	numpy scipy scikit-image scikit-learn \
-	matplotlib \
+	matplotlib seaborn \
 	imageio h5py \
 	einops \
 	pandas \
