@@ -52,6 +52,7 @@ ENV TORCH_HOME /cvlabsrc1/cvlab/pytorch_model_zoo
 RUN pip --no-cache-dir install \
 	torch \
 	torchvision \
-	future tensorboard
+	future tensorboard \
+	kornia
 # future is for caffe2 / torch.tensorboard
 
