@@ -1,0 +1,94 @@
+#!/usr/bin/env python3
+
+import sys, time, psutil, os
+import logging
+from datetime import datetime
+from types import SimpleNamespace
+from socket import gethostname
+try:
+	import py3nvml
+except ImportError:
+	py3nvml = None
+
+TIMEOUT_MIN = 30
+TIMEOUT = TIMEOUT_MIN * 60
+INTERVAL = 10       # seconds
+OWN_PID = os.getpid()
+
+def log_config_default(log_name, filepath):
+	log = logging.getLogger(log_name)
+	log.setLevel(logging.DEBUG)
+
+	fmt = logging.Formatter(
+		fmt = '{asctime}| {message}',
+		style = '{',
+		datefmt = '%Y-%m-%d %H:%M:%S',
+	)
+
+	handler_stdout = logging.StreamHandler(sys.stdout)
+	handler_stdout.setFormatter(fmt)
+	log.addHandler(handler_stdout)
+
+	try:
+		handler_file = logging.FileHandler(filepath)
+		handler_file.setFormatter(fmt)
+		log.addHandler(handler_file)
+	except Exception as e:
+		log.warning(f'Failed to initialize log file {filepath}: {e}')
+
+	return log
+
+
+def check_activity():
+	procs = list(psutil.process_iter())
+
+	free_gpus = []
+	if py3nvml:
+		free_gpus = py3nvml.get_free_gpus()
+	
+	return SimpleNamespace(
+		has_python = any((p.pid != OWN_PID and 'python' in p.name()) for p in procs),
+		uses_gpus = free_gpus and any(free_gpus),
+		uses_cpu = any(p.cpu_percent() > 5. for p in procs),
+	)
+
+def get_run_name():
+	node_name = gethostname()
+	str_date = datetime.now().isoformat()
+	return f'{str_date}__{node_name}'
+
+def main():
+	run_name = get_run_name()
+
+	log = log_config_default('sleeper', f'/cvlabdata2/sleeper/logs/{run_name}.log')
+	log.info(f'Sleeper starting, run {run_name}')
+
+	time_last_activity = time.time()
+
+	while True:
+		time_now = time.time()
+
+		activity = check_activity()
+		is_active = activity.has_python or activity.uses_gpus or activity.uses_cpu
+
+		if is_active:
+			time_last_activity = time_now
+
+			msg = ' '.join(k for k, v in activity.__dict__.items() if v)
+
+			log.info(f'Active | {msg}')
+		else:
+			time_idle = time_now - time_last_activity
+
+			log.info(f'Idle  | Idle time {time_idle/60 :.1f} / {TIMEOUT_MIN} min')
+
+			if time_idle >= TIMEOUT:
+				log.info(f'Idle time exceeded timeout, terminating.')
+				return
+				
+		time.sleep(INTERVAL)
+
+if __name__ == '__main__':
+	main()
+
+

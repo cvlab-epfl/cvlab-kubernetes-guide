@@ -7,5 +7,4 @@
 
 /bin/bash /opt/lab/setup.sh
 
-echo "Waiting for $AUTO_SHUTDOWN_TIME"
-sleep $AUTO_SHUTDOWN_TIME
+sleeper
