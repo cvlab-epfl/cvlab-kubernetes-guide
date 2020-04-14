@@ -8,7 +8,12 @@ FROM ${BASE_IMG}
 # FROM  ic-registry.epfl.ch/cvlab/lis/lab-pytorch-cuda-ext:latest
 MAINTAINER Krzysztof Lis <krzysztof.lis@epfl.ch>
 
-RUN pip --no-cache-dir install 'git+https://github.com/facebookresearch/detectron2.git'
+# detectron uses: cityscapesScripts shapely
+
+RUN pip --no-cache-dir install \
+	'git+https://github.com/facebookresearch/detectron2.git' \
+	cityscapesScripts shapely
+
 
 RUN mkdir /tmp/apex-build \
 	&& cd /tmp/apex-build \

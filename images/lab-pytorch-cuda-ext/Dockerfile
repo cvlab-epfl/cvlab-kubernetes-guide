@@ -22,7 +22,7 @@ RUN pip --no-cache-dir install \
 	pyyaml easydict natsort \
 	xonsh \
 	gpustat \
-	pycocotools
+	pycocotools 	
 
 RUN python -c "import imageio; imageio.plugins.freeimage.download()"
 
