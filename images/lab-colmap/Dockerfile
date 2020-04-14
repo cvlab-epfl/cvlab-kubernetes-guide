@@ -27,7 +27,10 @@ RUN apt update && apt-get install -y \
 	&& apt-get clean
 
 RUN mkdir /tmp/colmap-build
+
+# colmap source from https://github.com/colmap/colmap/archive/3.6-dev.3.zip
 COPY colmap-3.6-dev.3.zip /tmp/colmap-build/colmap-dev.zip
+
 RUN cd /tmp/colmap-build \
 	&& unzip colmap-dev.zip \
 	&& mv colmap-3.6-dev.3 colmap-dev \
@@ -35,6 +38,6 @@ RUN cd /tmp/colmap-build \
 	&& mkdir build \
 	&& cd build \
 	&& cmake .. \
-	&& make -j 6 \
+	&& make -j 12 \
 	&& make install \
 	&& cd / && rm -r /tmp/colmap-build
