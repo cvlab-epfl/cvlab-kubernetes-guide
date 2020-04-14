@@ -24,7 +24,7 @@ docker build lab-python-ml \
 docker build lab-colmap \
 	--build-arg BASE_IMG=ic-registry.epfl.ch/cvlab/lis/lab-pytorch-apex:dev \
 	-t ic-registry.epfl.ch/cvlab/lis/lab-colmap:dev
-
+	--network="host"
 
 docker push ic-registry.epfl.ch/cvlab/lis/lab-base:cuda10.1-devel
 docker push ic-registry.epfl.ch/cvlab/lis/lab-pytorch-apex:dev

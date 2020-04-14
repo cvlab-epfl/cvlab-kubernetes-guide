@@ -24,7 +24,7 @@ RUN apt update && apt-get install -y \
 	libglew-dev \
 	qtbase5-dev libqt5opengl5-dev \
 	unzip \
-	&& apt-get clean
+	&& apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir /tmp/colmap-build
 
