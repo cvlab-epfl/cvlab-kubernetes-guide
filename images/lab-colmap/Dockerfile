@@ -32,6 +32,9 @@ RUN mkdir /tmp/colmap-build
 COPY colmap-3.6-dev.3.zip /tmp/colmap-build/colmap-dev.zip
 
 # Build only cuda arch = 7.0 for our V100 GPU
+# 	cmake: -DCUDA_ARCHS=7.0
+# https://developer.nvidia.com/cuda-gpus
+
 RUN cd /tmp/colmap-build \
 	&& unzip colmap-dev.zip \
 	&& mv colmap-3.6-dev.3 colmap-dev \

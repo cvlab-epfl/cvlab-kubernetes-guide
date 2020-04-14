@@ -12,6 +12,15 @@ and login to our docker image repository:
 docker login ic-registry.epfl.ch
 ```
 
+Afterwards, clear the plain-text password file:
+```
+rm ~/.docker/config.json
+```
+
+<!-- wget https://github.com/docker/docker-credential-helpers/releases/download/v0.6.3/docker-credential-secretservice-v0.6.3-amd64.tar.gz -->
+<!-- tar xvf docker-credential-secretservice-v0.6.3-amd64.tar.gz -->
+
+
 ## Dockerfiles
 
 An image is specified by a directory containing a file named *Dockerfile*.
