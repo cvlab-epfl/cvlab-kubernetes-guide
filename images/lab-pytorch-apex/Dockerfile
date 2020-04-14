@@ -14,7 +14,10 @@ RUN pip --no-cache-dir install \
 	'git+https://github.com/facebookresearch/detectron2.git' \
 	cityscapesScripts shapely
 
-
+# Build apex for 7.0 cuda level for our V100 GPU
+# Default is 6.0 6.1 6.2 7.0 7.5
+# https://developer.nvidia.com/cuda-gpus
+ENV TORCH_CUDA_ARCH_LIST "7.0"
 RUN mkdir /tmp/apex-build \
 	&& cd /tmp/apex-build \
 	&& wget --output-document=apex-master.zip https://github.com/NVIDIA/apex/archive/master.zip \
