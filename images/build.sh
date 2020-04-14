@@ -19,7 +19,7 @@ docker build lab-python-ml \
 	-t ic-registry.epfl.ch/cvlab/lis/lab-python-ml:dev \
 	--network="host"
 
-# wget https://github.com/colmap/colmap/archive/3.6-dev.3.zip -O lab-colmap/3.6-dev.3.zip
+# wget https://github.com/colmap/colmap/archive/3.6-dev.3.zip -O lab-colmap/colmap-3.6-dev.3.zip
 
 docker build lab-colmap \
 	--build-arg BASE_IMG=ic-registry.epfl.ch/cvlab/lis/lab-pytorch-apex:dev \
