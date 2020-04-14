@@ -49,17 +49,42 @@ There are also many publicly available images at the [Docker Hub](https://hub.do
 I prepared some images which will hopefully be of use to you (click to see Dockerfiles):
 
 #### lab-base
-[`ic-registry.epfl.ch/cvlab/lis/lab-base:cuda10`](./lab-base/Dockerfile)  
+[`ic-registry.epfl.ch/cvlab/lis/lab-base:cuda10.1-devel`](./lab-base/Dockerfile)  
 `ic-registry.epfl.ch/cvlab/lis/lab-base:cpu` (same)
 
 Basic utilities and the user-setup system.
 You can make additional setup steps by putting a `.sh` script in `/opt/lab/setup_steps`. The setup steps are run in alphabetical order, hence the nubmers at the start.
 
+#### lab-pytorch-cuda-ext
+[`ic-registry.epfl.ch/cvlab/lis/lab-pytorch-cuda-ext`](./lab-pytorch-cuda-ext/Dockerfile)
+
+* usual Python numeric libs
+* Jupyter
+* PyTorch and accessories
+* OpenCV
+
+#### lab-pytorch-apex
+
+[`ic-registry.epfl.ch/cvlab/lis/lab-pytorch-apex`](./lab-pytorch-apex/Dockerfile)
+
+Extra libs on top of PyTorch
+
+- [APEX](https://github.com/NVIDIA/apex) - half precision
+- [detectron2](https://github.com/facebookresearch/detectron2) - object detection
+
+
 #### lab-python-ml
 
-[`ic-registry.epfl.ch/cvlab/lis/lab-python-ml:cuda10`](./lab-python-ml/Dockerfile)
+[`ic-registry.epfl.ch/cvlab/lis/lab-python-ml`](./lab-python-ml/Dockerfile)
 
-Python 3.6 + PIP, common Python libraries, Jupyter, OpenCV, Pytorch, Tensorflow.
+Adds Tensorflow to the above.
+
+#### lab-colmap
+
+[`ic-registry.epfl.ch/cvlab/lis/lab-pytorch-apex-colmap`](./lab-colmap/Dockerfile)
+
+Adds [COLMAP](https://github.com/colmap/colmap) multi-view 3d reconstruction.
+
 
 If you need additional software installed, please let me know, or create your own image on top, as described below.
 
@@ -105,3 +130,23 @@ Now you can use the image in your pods!
 If your software needs to be compiled, you may benefit from [multi-stage builds](https://docs.docker.com/develop/develop-images/multistage-build/):
 this involves creating a temporary container with the build tools where the compilation takes place, then we only copy the results of the compilation to the output image.
 This saves space in the output image and allows the build process to be cached.
+
+
+# Maintaining the images
+
+To build the COLMAP image, download the source first - link and destination listed in `build.sh`.
+
+The images are built by `build.sh`.
+
+At this stage, they are in the `:dev` tag, and can be tested before being used by everyone.
+
+Release using `publish.sh` which relabels from `:dev` to `:latest`.
+
+
+### Server
+
+The build is done on iccvlabsrv23, where I have the permission to launch docker.
+
+On this server, the default docker network "bridge" does not give us access to the outside net.
+This is fixed by `--network="host"`.
+
