@@ -1,10 +1,14 @@
-# Install python and its packages
+# Extra libs on top of PyTorch
+# - APEX - half prefcision https://github.com/NVIDIA/apex
+# - detectron2 - object detection https://github.com/facebookresearch/detectron2
+
 
 ARG BASE_IMG
 FROM ${BASE_IMG}
 # FROM  ic-registry.epfl.ch/cvlab/lis/lab-pytorch-cuda-ext:latest
 MAINTAINER Krzysztof Lis <krzysztof.lis@epfl.ch>
 
+RUN pip --no-cache-dir install 'git+https://github.com/facebookresearch/detectron2.git'
 
 RUN mkdir /tmp/apex-build \
 	&& cd /tmp/apex-build \
