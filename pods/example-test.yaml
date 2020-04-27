@@ -8,7 +8,7 @@ spec:
   restartPolicy: Never
   containers:
     - name: base-test
-      image: ic-registry.epfl.ch/cvlab/lis/lab-python-ml:cuda10
+      image: ic-registry.epfl.ch/cvlab/lis/lab-python-ml:latest
       imagePullPolicy: Always # load the newest version of the image
       
       command: ["/opt/lab/setup_and_wait.sh"] 
@@ -26,10 +26,6 @@ spec:
         value: "CVLAB-unit"
       - name: CLUSTER_GROUP_ID
         value: "11166"
-      # the script /opt/lab/setup_and_wait.sh waits for $AUTO_SHUTDOWN_TIME and exits
-      # example durations: 20s, 30m, 2h ... (see `sleep --help`)
-      - name: AUTO_SHUTDOWN_TIME
-        value: "30m"
       # - name: SSH_PUBLIC_KEY # ssh does not seem to work yet
       #   value: "[...]"
           

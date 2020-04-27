@@ -35,7 +35,7 @@ To communicate with the Kubernetes server, we need to:
 I made some base images that should be useful to everyone. It should be easy to start using those, without having to build custom images. 
 The user account setup is done through environment variables, so you do not have to place it in your Dockerfile.
 
-[`ic-registry.epfl.ch/cvlab/lis/lab-pytorch-apex:latest`](./images/lab-pytorch-apex/Dockerfile) has PyTorch with the [apex](https://github.com/NVIDIA/apex) multi-precision library.
+[`ic-registry.epfl.ch/cvlab/lis/lab-pytorch-apex:latest`](./images/lab-pytorch-apex/Dockerfile) has PyTorch with the [apex](https://github.com/NVIDIA/apex) multi-precision library and [detectron2](https://github.com/facebookresearch/detectron2).
 Additionally, it is based on the CUDA development image (has `nvcc`), so you can build CUDA extensions here.
 More about apex: [PyTorch half-precision](doc/PyTorchHalfPrecision.md).
 
@@ -71,7 +71,7 @@ spec:
   containers:
     - name: base-test
       image: ic-registry.epfl.ch/cvlab/lis/lab-base:cpu
-      command: ["/opt/lab/setup_and_wait_forever.sh"] 
+      command: ["/opt/lab/setup_and_wait.sh"] 
 ```
 
 We set the [`restartPolicy`](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy)
@@ -163,8 +163,8 @@ In my base containers, these variables are used to setup the user account with t
 The images which have this feature so far are:  
 
 * `ic-registry.epfl.ch/cvlab/lis/lab-base:cpu` 
-* `ic-registry.epfl.ch/cvlab/lis/lab-base:cuda10`
-* `ic-registry.epfl.ch/cvlab/lis/lab-python-ml:cuda10`
+* `ic-registry.epfl.ch/cvlab/lis/lab-pytorch-apex:latest:latest`
+* `ic-registry.epfl.ch/cvlab/lis/lab-python-ml:latest`
 * and anything built on top of those
 
 ### Startup Command
@@ -173,12 +173,7 @@ The `command` field specifies the program to run when the container starts. Also
 Therefore, if we want the container to wait and let us connect to it, we can specify the command as:
 
 ```yaml
-command: ["sleep", "1h"]
-```
-
-or if you are using my premade images:
-```yaml
-# sets up the user account and then waits for the time specified in $AUTO_SHUTDOWN_TIME
+# sets up the user account and uses the adaptive sleeper to shut down 0.5h after being idle.
 command: ["/opt/lab/setup_and_wait.sh"]
 ```
 

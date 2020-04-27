@@ -9,7 +9,7 @@ spec:
   restartPolicy: Never
   containers:
     - name: perform-job
-      image: ic-registry.epfl.ch/cvlab/lis/lab-python-ml:cuda10
+      image: ic-registry.epfl.ch/cvlab/lis/lab-python-ml:latest
       imagePullPolicy: Always # load the newest version of the image
       #command: ["/opt/lab/setup_and_wait.sh"] 
       #   this one will do nothing and wait, so you can enter the container yourself with

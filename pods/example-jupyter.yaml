@@ -8,7 +8,7 @@ spec:
   restartPolicy: Never
   containers:
     - name: jupyter-server
-      image: ic-registry.epfl.ch/cvlab/lis/lab-python-ml:cuda10
+      image: ic-registry.epfl.ch/cvlab/lis/lab-python-ml:latest
       imagePullPolicy: Always # load the newest version of the image
       
       #command: ["/opt/lab/setup_and_wait.sh"] 
