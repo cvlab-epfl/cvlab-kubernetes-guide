@@ -27,6 +27,7 @@ docker build lab-colmap \
 	--network="host"
 
 docker push ic-registry.epfl.ch/cvlab/lis/lab-base:cuda10.1-devel
+docker push ic-registry.epfl.ch/cvlab/lis/lab-pytorch-cuda-ext:dev
 docker push ic-registry.epfl.ch/cvlab/lis/lab-pytorch-apex:dev
 docker push ic-registry.epfl.ch/cvlab/lis/lab-python-ml:dev
 docker push ic-registry.epfl.ch/cvlab/lis/lab-colmap:dev
