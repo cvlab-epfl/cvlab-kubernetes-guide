@@ -8,6 +8,12 @@ FROM ${BASE_IMG}
 # FROM  ic-registry.epfl.ch/cvlab/lis/lab-pytorch-cuda-ext:latest
 MAINTAINER Krzysztof Lis <krzysztof.lis@epfl.ch>
 
+# The libraries apex and detectron2 have Cuda pytorch extensions.
+# We build on docker, without a GPU, so pytorch will not know which cuda level to use.
+# We tell it to use Cuda level 7.0 for our V100 GPU
+# https://developer.nvidia.com/cuda-gpus
+ENV TORCH_CUDA_ARCH_LIST "7.0"
+
 # detectron2 https://github.com/facebookresearch/detectron2
 # uses libs: cityscapesScripts shapely
 # 
@@ -16,17 +22,15 @@ MAINTAINER Krzysztof Lis <krzysztof.lis@epfl.ch>
 # torch.cuda.is_available() reports false because of no GPU.
 # Therefore, we force CUDA build through env  FORCE_CUDA="1"
 # 	detectron2/setup.py:58
+# We also need to set the cuda level, otherwise it would crash because it would not know which level to use.
 ENV FORCE_CUDA "1"
 RUN pip --no-cache-dir install \
 	'git+https://github.com/facebookresearch/detectron2.git' \
 	cityscapesScripts shapely
 
+
 # APEX https://github.com/NVIDIA/apex
-#
-# Build apex for 7.0 cuda level for our V100 GPU
-# Default is 6.0 6.1 6.2 7.0 7.5
-# https://developer.nvidia.com/cuda-gpus
-ENV TORCH_CUDA_ARCH_LIST "7.0"
+# By default uses cuda levels 6.0 6.1 6.2 7.0 7.5, we limit to 7.0
 RUN mkdir /tmp/apex-build \
 	&& cd /tmp/apex-build \
 	&& wget --output-document=apex-master.zip https://github.com/NVIDIA/apex/archive/master.zip \
