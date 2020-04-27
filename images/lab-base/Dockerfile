@@ -34,4 +34,7 @@ COPY setup.sh setup_and_run_command.sh setup_and_wait.sh sleeper /opt/lab/
 RUN ln -s /opt/lab/sleeper /usr/bin/sleeper
 COPY setup_steps /opt/lab/setup_steps
 
+# make sure the setup scripts are executable
+RUN chmod -R a+x /opt/lab/
+
 CMD ["/opt/lab/setup_and_wait.sh"]
