@@ -1,6 +1,6 @@
 
 docker build lab-base \
-	--build-arg BASE_IMG=nvidia/cuda:10.1-cudnn7-devel-ubuntu18.04 \
+	--build-arg BASE_IMG=nvidia/cuda:10.2-cudnn7-devel-ubuntu18.04 \
 	-t ic-registry.epfl.ch/cvlab/lis/lab-base:cuda10.1-devel \
 	--network="host"
 
