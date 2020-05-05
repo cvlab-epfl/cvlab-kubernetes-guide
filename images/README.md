@@ -80,7 +80,7 @@ Extra libs on top of PyTorch
 
 - [APEX](https://github.com/NVIDIA/apex) - half precision
 - [detectron2](https://github.com/facebookresearch/detectron2) - object detection
-
+- [PyTorch 3D](https://github.com/facebookresearch/pytorch3d)
 
 #### lab-python-ml
 

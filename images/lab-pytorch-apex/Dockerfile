@@ -1,7 +1,7 @@
 # Extra libs on top of PyTorch
 # - APEX - half prefcision https://github.com/NVIDIA/apex
 # - detectron2 - object detection https://github.com/facebookresearch/detectron2
-
+# - PyTorch 3D - https://github.com/facebookresearch/pytorch3d
 
 ARG BASE_IMG
 FROM ${BASE_IMG}
@@ -27,6 +27,11 @@ ENV FORCE_CUDA "1"
 RUN pip --no-cache-dir install \
 	'git+https://github.com/facebookresearch/detectron2.git' \
 	cityscapesScripts shapely
+
+
+# PyTorch 3D https://github.com/facebookresearch/pytorch3d
+RUN pip --no-cache-dir install \
+	'git+https://github.com/facebookresearch/pytorch3d.git'
 
 
 # APEX https://github.com/NVIDIA/apex
