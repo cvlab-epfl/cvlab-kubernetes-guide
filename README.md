@@ -1,17 +1,23 @@
-
 # Kubernetes at CVLab
 
-If you find a mistake, something is not working, you know a better way to do it, 
-or you need a new image to be built, please let me know or open an issue here.  
-*- Kris*
+If you find a mistake, something is not working, you know a better way to do it,
+or you need a new image to be built, please let me know or open an issue here.
+*\- Kris*
 
 Other resources on that topic:
 
-* <https://github.com/EPFL-IC/caas>
-* <https://github.com/epfml/kubernetes-setup>
-* <https://github.com/kcyu2014/cvlab-kubernetes>
+* [https://github.com/EPFL-IC/caas](https://github.com/EPFL-IC/caas)
+* [https://github.com/epfml/kubernetes-setup](https://github.com/epfml/kubernetes-setup)
+* [https://github.com/kcyu2014/cvlab-kubernetes](https://github.com/kcyu2014/cvlab-kubernetes)
 
-
+<br>
+<br>
+``` xml
+<outer>
+	<inner />
+</outer>
+```
+<br>
 ## Overview
 
 Docker *containers* are the processses running on a docker host (that is our server). They use the same operating system as the host, but have their own internal file system and do no see the host's file system.
@@ -21,18 +27,16 @@ Docker *containers* are the processses running on a docker host (that is our ser
 [Kubernetes](https://kubernetes.io/) is a system that organizes running a big number of docker containers on a multi-machine cluster.
 The rationale is that Kubernetes will allocate resources when we need to run a job and release them later, leading to a more efficient usage than when machines are assigned to people - we do not pay for the resources when the jobs are not running.
 
-
 ## Setup
 
 To communicate with the Kubernetes server, we need to:
 
 * [install kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-
 * get the config files from IC admins (`user.config`, `user.crt`, `user.key`), copy them to `~/.kube` and rename `user.config` to `config`.
 
 ## Pre-built images
 
-I made some base images that should be useful to everyone. It should be easy to start using those, without having to build custom images. 
+I made some base images that should be useful to everyone. It should be easy to start using those, without having to build custom images.
 The user account setup is done through environment variables, so you do not have to place it in your Dockerfile.
 
 [`ic-registry.epfl.ch/cvlab/lis/lab-pytorch-apex:latest`](./images/lab-pytorch-apex/Dockerfile) has PyTorch with the [apex](https://github.com/NVIDIA/apex) multi-precision library and [detectron2](https://github.com/facebookresearch/detectron2).
@@ -46,16 +50,16 @@ If you need more, you can extend this and build your own image on top (Dockerfil
 
 More about images [here](./images).
 
-
 ## Defining your containers
 
 We tell Kubernetes to run our containers by creating Pods. A [pod](https://kubernetes.io/docs/concepts/workloads/pods/pod/) is a definition of a group of containers that should be run.
 
 An example pod file is shown in [pods/example-test.yaml](./pods/example-test.yaml).
 
-First we specify the name of the pod - we will use this name to refer to it by different commands. 
+First we specify the name of the pod - we will use this name to refer to it by different commands.
 Please also provide your user name and desired priority of the job, these are used for resource allocation.
-```yaml
+
+``` yaml
 metadata:
   name: username-example-test
   labels:
@@ -65,13 +69,13 @@ metadata:
 
 Then we say what containers should be running in that pod, most importantly what image to start from and what command to run.
 
-```yaml
+``` yaml
 spec:
   restartPolicy: Never # once it finishes, do not restart
   containers:
     - name: base-test
       image: ic-registry.epfl.ch/cvlab/lis/lab-base:cpu
-      command: ["/opt/lab/setup_and_wait.sh"] 
+      command: ["/opt/lab/setup_and_wait.sh"]
 ```
 
 We set the [`restartPolicy`](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy)
@@ -79,31 +83,31 @@ to `Never` so that once the job is finished, it releases the resources and does 
 By default, Kubernetes restarts containers when they finish.
 We could also use a Kubernetes [Job](https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/).
 
-
 Futher we specify the environment variables, for example:
 
-```yaml
+``` yaml
 env:
   - name: JUPYTER_CONFIG_DIR
     value: "/cvlabdata2/home/lis/kubernetes_example/.jupyter"
   ...
 ```
+
 The variables concerning users and groups, as well as `volumes` are described in the section about [cvlabdata](#connection-to-cvlabdata).
 
 The `ports` entry is described [later](#network-communication-port-forwarding).
-
 
 ### GPU
 
 To request a GPU, add this to the container:
 
-```yaml
+``` yaml
       resources:
         limits:
           nvidia.com/gpu: 1 # requesting 1 GPU
 ```
 
 It may happen that the GPUs are all occupied, you can check how many are used:
+
 ```
 kubectl describe quota --namespace=cvlab
 ```
@@ -113,7 +117,8 @@ kubectl describe quota --namespace=cvlab
 By default the container only has access to its internal file system. To read or save some data, we will mount the cvlabdata drives.
 
 This is achieved by adding this to your pod configuration (pod is the top-level object):
-```yaml
+
+``` yaml
   volumes:
     - name: cvlabsrc1
       persistentVolumeClaim:
@@ -125,8 +130,10 @@ This is achieved by adding this to your pod configuration (pod is the top-level 
       persistentVolumeClaim:
         claimName: pv-cvlabdata2
 ```
+
 and this to each of your containers:
-```yaml
+
+``` yaml
       volumeMounts:
         - mountPath: /cvlabsrc1
           name: cvlabsrc1
@@ -140,13 +147,14 @@ and this to each of your containers:
 
 To have write permissions to cvlabdata, we need to present our user IDs from the cluster.
 Run the `id` command on iccluster, you should get something like this:
+
 ```
 uid=123456(youruser) gid=11166(CVLAB-unit) groups=....
 ```
 
 Copy the number from `uid=...` and put it into the pod configuration file:
 
-```yaml
+``` yaml
       env:
       - name: CLUSTER_USER
         value: "username" # set this
@@ -160,40 +168,42 @@ Copy the number from `uid=...` and put it into the pod configuration file:
 
 In my base containers, these variables are used to setup the user account with the following [script](./images/lab-base/setup_steps/10_cluster_user.sh) when the container start up.
 
-The images which have this feature so far are:  
+The images which have this feature so far are:
 
-* `ic-registry.epfl.ch/cvlab/lis/lab-base:cpu` 
+* `ic-registry.epfl.ch/cvlab/lis/lab-base:cpu`
 * `ic-registry.epfl.ch/cvlab/lis/lab-pytorch-apex:latest:latest`
 * `ic-registry.epfl.ch/cvlab/lis/lab-python-ml:latest`
 * and anything built on top of those
 
 ### Startup Command
+
 The `command` field specifies the program to run when the container starts. Also when this command finishes, the container will shut down.
 
 Therefore, if we want the container to wait and let us connect to it, we can specify the command as:
 
-```yaml
+``` yaml
 # sets up the user account and uses the adaptive sleeper to shut down 0.5h after being idle.
 command: ["/opt/lab/setup_and_wait.sh"]
 ```
 
 Please remember that this will run and occupy the resources until you explicitly delete the pod or the time runs out.
 
-
 For example running a python program:
-```yaml
+
+``` yaml
 command: ["python", "some_program.py", "--option", "val"]
 ```
 
 In the premade images with user setup:
-```yaml
+
+``` yaml
 # run a python job
 command:
   - "/opt/lab/setup_and_run_command.sh"
   - "cd /cvlabdata2/home/lis/kubernetes_example && python job_example.py"
 ```
 
-```yaml
+``` yaml
 # start a jupyter server
 command:
   - "/opt/lab/setup_and_run_command.sh"
@@ -205,6 +215,7 @@ You can run those examples in `/cvlabdata2/home/lis/kubernetes_example`, I will 
 #### Timeout
 
 If a process does not finish by itself, I recommend limiting its lifetime with [timeout](https://www.tecmint.com/run-linux-command-with-time-limit-and-timeout/). The following command will automatically shut down Jupyter after 4 hours:
+
 ```
 timeout 4h jupyter lab --ip=0.0.0.0 --no-browser --notebook-dir=/cvlabdata2/home/lis/kubernetes_example"
 ```
@@ -213,35 +224,47 @@ timeout 4h jupyter lab --ip=0.0.0.0 --no-browser --notebook-dir=/cvlabdata2/home
 
 We list, start and stop pods using the *kubectl* command
 
-* `kubectl get pods` - list pods which currently exist
-* `kubectl get pods --field-selector=status.phase=Running` - list pods which are currently running
-* `kubectl create -f pod_definition_file.yaml` - create a new pod according to your specification
-* `kubectl delete pod pod_name` - delete your pod (make sure you delete containers you don't use anymore)
-* `kubectl describe pods/pod_name` - show information about a pod, including the output logs, useful to diagnose why it isn't working.
-* `kubectl logs pod_name` - output logs from a pod
-* `kubectl describe quota --namespace=cvlab` - show how many GPUs are used
+* `kubectl get pods` \- list pods which currently exist
+* `kubectl get pods --field-selector=status.phase=Running` \- list pods which are currently running
+* `kubectl create -f pod_definition_file.yaml` \- create a new pod according to your specification
+* `kubectl delete pod pod_name` \- delete your pod \(make sure you delete containers you don't use anymore\)
+* `kubectl describe pods/pod_name` \- show information about a pod\, including the output logs\, useful to diagnose why it isn't working\.
+* `kubectl logs pod_name` \- output logs from a pod
+* `kubectl describe quota --namespace=cvlab` \- show how many GPUs are used
 
 #### Connecting an interactive console to the container
+
 Once a pod is running, we can connect to it and run commands inside:
+
 ```
 kubectl exec -it pod_name -- /bin/bash
 ```
 
 This will be executed as the `root` user, so switch to your user which can write on cvlab drives:
+
 ```
 su youruser -c /bin/bash
 ```
 
+This can be combined into a single convenient command:
+
+```
+kubectl exec -it pod-name -- bash -c "su youtuser -c tmux"
+```
+
 #### Diagnosing problems
+
 If the job is not running as intended, you can see its status:
+
 ```
 kubectl describe pod/pod_name
 ```
+
 and check for errors by viewing the the output of your process:
+
 ```
 kubectl logs pod_name
 ```
-
 
 ## Resource allocation in CVLAB
 
@@ -252,11 +275,12 @@ We order the jobs and the position in the queue will decide which jobs will be a
 * Among the jobs of a single user, we order them according to user-set priority (in the label `priority`) with higher numbers being more important: priority `+1` is before priority `-1`, the default is 0.
 If priority is equal, the earlier job takes precedence.
 
-The queue is displayed at <http://iccvlabsrv13.iccluster.epfl.ch:5336/>.  
+The queue is displayed at [http://iccvlabsrv13.iccluster.epfl.ch:5336/](http://iccvlabsrv13.iccluster.epfl.ch:5336/).
 If all of the 30 GPUs are occupied, and you want to run your **1st** job, you can kill the last job in the queue. In that case please notify the owner.
 
 Please remember to specify your user name and priority in the pod config.
-```yaml
+
+``` yaml
 metadata:
   name: username-example-test
   labels:
@@ -265,13 +289,13 @@ metadata:
 ```
 
 ## Running multiple experiments in one container
+
 The GPUs in the Kubernetes cluster usually have `32GB` of memory, so compared to the previous 12GB GPUs, they should be capable of running 2 or 3 experiments of usual size at once.
 
 The script below shows a simple way to run several experiments at once.
 The commands will run in parallel, the container will finish when the last one finishes.
 
-
-```bash
+``` bash
 # my_job.sh
 python task_1.py &
 python task_2.py &
@@ -286,13 +310,13 @@ wait
 See the example [pod configuration for jupyter](./pods/example-jupyter.yaml).
 To connect to our container over the network, first we need to expose the ports in our container configuration:
 
-```yaml
+``` yaml
 ports:
 - containerPort: 8888
   name: jupyter
 ```
 
-One the container with exposed ports is running, we will make a tunnel from our local computer's port to the container's port 
+One the container with exposed ports is running, we will make a tunnel from our local computer's port to the container's port
 ([Kubernetes port forwarding](https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/)).
 
 ```
@@ -309,14 +333,14 @@ Then we can open jupyter at localhost:8001.
 The password in the example config is `hello`.
 
 To shut down jupyter (and the container with it) from the web interface:
+
 * JupyterLab: select *File -> Quit* from the menu in the top-left
 * Jupyter Notebook: press the *Quit* button in the top right
 
 Jupyter will run forever if we do not close it. Therefore I recommend limiting it with [timeout](https://www.tecmint.com/run-linux-command-with-time-limit-and-timeout/). The following command will automatically shut down Jupyter after 4 hours:
+
 ```
 timeout 4h jupyter lab --ip=0.0.0.0 --no-browser --notebook-dir=/cvlabdata2/home/lis/kubernetes_example"
 ```
 
 Alternatively a [load balancer](https://github.com/EPFL-IC/caas#step-three-accessing-pods-from-outside-of-the-cluster) can be used to make the container accessible through the network.
-
-
