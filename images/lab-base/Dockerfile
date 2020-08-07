@@ -2,7 +2,7 @@
 ARG BASE_IMG
 FROM ${BASE_IMG}
 
-MAINTAINER Krzysztof Lis <krzysztof.lis@epfl.ch>
+LABEL maintainer="Krzysztof Lis <krzysztof.lis@epfl.ch>"
 
 # install linux packages + python
 RUN sed 's@archive.ubuntu.com@ubuntu.ethz.ch@' -i /etc/apt/sources.list \

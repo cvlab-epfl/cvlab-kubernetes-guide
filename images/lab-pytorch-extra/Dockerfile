@@ -28,19 +28,9 @@ RUN pip --no-cache-dir install \
 	'git+https://github.com/facebookresearch/detectron2.git' \
 	cityscapesScripts shapely
 
-
 # PyTorch 3D https://github.com/facebookresearch/pytorch3d
 RUN pip --no-cache-dir install \
 	'git+https://github.com/facebookresearch/pytorch3d.git'
 
 
-# APEX https://github.com/NVIDIA/apex
-# By default uses cuda levels 6.0 6.1 6.2 7.0 7.5, we limit to 7.0
-RUN mkdir /tmp/apex-build \
-	&& cd /tmp/apex-build \
-	&& wget --output-document=apex-master.zip https://github.com/NVIDIA/apex/archive/master.zip \
-	&& 7z x apex-master.zip \
-	&& cd apex-master \
-	&& pip install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cuda_ext" . \
-	&& cd / \
-	&& rm -r /tmp/apex-build
+# APEX is now merged into pytorch1.6

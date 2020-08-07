@@ -3,7 +3,7 @@
 ARG BASE_IMG
 FROM ${BASE_IMG}
 # FROM  ic-registry.epfl.ch/cvlab/lis/lab-pytorch-cuda-ext:latest
-MAINTAINER Krzysztof Lis <krzysztof.lis@epfl.ch>
+LABEL maintainer="Krzysztof Lis <krzysztof.lis@epfl.ch>"
 
 RUN apt update && apt-get install -y \
 	cmake \
@@ -29,7 +29,7 @@ RUN apt update && apt-get install -y \
 RUN mkdir /tmp/colmap-build
 
 # colmap source from https://github.com/colmap/colmap/archive/3.6-dev.3.zip
-COPY colmap-3.6-dev.3.zip /tmp/colmap-build/colmap-dev.zip
+COPY colmap-3.6.zip /tmp/colmap-build/colmap-dev.zip
 
 # Build only cuda arch = 7.0 for our V100 GPU
 # 	cmake: -DCUDA_ARCHS=7.0
@@ -37,7 +37,7 @@ COPY colmap-3.6-dev.3.zip /tmp/colmap-build/colmap-dev.zip
 
 RUN cd /tmp/colmap-build \
 	&& unzip colmap-dev.zip \
-	&& mv colmap-3.6-dev.3 colmap-dev \
+	&& mv colmap-3.6 colmap-dev \
 	&& cd colmap-dev \
 	&& mkdir build \
 	&& cd build \

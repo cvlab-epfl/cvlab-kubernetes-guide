@@ -3,7 +3,7 @@
 ARG BASE_IMG
 FROM ${BASE_IMG}
 # FROM  ic-registry.epfl.ch/cvlab/lis/lab-base:cuda10.1-devel
-MAINTAINER Krzysztof Lis <krzysztof.lis@epfl.ch>
+LABEL maintainer="Krzysztof Lis <krzysztof.lis@epfl.ch>"
 
 # scientific
 RUN pip --no-cache-dir install \
@@ -38,7 +38,8 @@ ENV TORCH_HOME /cvlabsrc1/cvlab/pytorch_model_zoo
 RUN pip --no-cache-dir install \
 	torch \
 	torchvision \
-	kornia \
-	future tensorboard
+	future tensorboard \
+	&& pip --no-cache-dir install --no-deps kornia 
 # future is for caffe2 / torch.tensorboard
+# kornia has deps on old pytorch versions, so ignore its deps
 
