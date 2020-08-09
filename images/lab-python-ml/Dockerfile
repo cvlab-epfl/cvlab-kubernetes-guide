@@ -3,7 +3,7 @@
 ARG BASE_IMG
 FROM ${BASE_IMG}
 # FROM  ic-registry.epfl.ch/cvlab/lis/lab-pytorch-apex:latest
-LABEL maintainer=Krzysztof Lis <krzysztof.lis@epfl.ch>
+LABEL maintainer="Krzysztof Lis <krzysztof.lis@epfl.ch>"
 
 # tensorflow
 RUN pip --no-cache-dir install \
