@@ -27,7 +27,8 @@ RUN pip --no-cache-dir install \
 	&& pip --no-cache-dir install --upgrade \
 		wheel virtualenv pip \
 	&& pip --no-cache-dir install --upgrade \
-		psutil py3nvml
+		psutil py3nvml \
+		dataclasses
 
 RUN mkdir /opt/lab
 COPY setup.sh setup_and_run_command.sh setup_and_wait.sh sleeper /opt/lab/
