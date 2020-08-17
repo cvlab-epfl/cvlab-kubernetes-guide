@@ -103,10 +103,11 @@ If you need additional software installed, please let me know, or create your ow
 * At the time, our image is based on `nvidia/cuda:10.2-cudnn7-devel-ubuntu18.04`. There is a newer one on ubuntu20.04, but it has CUDA 11 which PyTorch is not ready for, additionally our drivers are for 10.2 CUDA.
 That image is on the `bionic` ubuntu version.
 * The default [python3 package on bionic](https://packages.ubuntu.com/bionic/python3) is 3.6 and this works. In this branch however we want newer python - 3.8 at the time.
-* There is a [python3.8 package on bionic](https://packages.ubuntu.com/bionic-updates/python3.8), however there is a packaging bug - this installation is missing the `disutils` module from the standard library [[discussion of the problem](https://askubuntu.com/questions/1239829/modulenotfounderror-no-module-named-distutils-util)].
+* There is a [python3.8 package on bionic](https://packages.ubuntu.com/bionic-updates/python3.8), however there is a packaging bug - this installation is missing the `disutils` module from the standard library [[discussion of the problem](https://askubuntu.com/questions/1239829/modulenotfounderror-no-module-named-distutils-util)]. The lack of `distutils` causes failure to install PIP.
 The module `distutils` is normally found in a package `python3-distutils`, but on bionic there is no `python3.8-distutils`.
 * There is a [PPA deadsnakes](https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa) with more python builds for various ubuntu versions.
 However, the 3.8 installation on ubuntu fails to load the `ssl` module - perhaps they did not install the ssl during the build.
+The lack of `ssl` causes an error when downloading packages over HTTPS.
 * Hence we [build python from source](./lab-base/Dockerfile_py38fromsrc), based on this [dockerfile of python image](https://github.com/docker-library/python/blob/1b78ff417e41b6448d98d6dd6890a1f95b0ce4be/3.8/buster/Dockerfile)
 
 
