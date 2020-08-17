@@ -37,7 +37,7 @@ RUN mkdir /tmp/python-build && cd /tmp/python-build \
 	&& make install -j4 \
 	&& cd /tmp && rm -r /tmp/python-build \
 	&& ln -s /usr/local/bin/python3.8 /usr/local/bin/python \
-	&& ln -s /usr/lcoal/bin/pip3 /usr/local/bin/pip 
+	&& ln -s /usr/local/bin/pip3 /usr/local/bin/pip 
 
 #core
 #+ tools for sleeper
@@ -46,7 +46,7 @@ RUN pip --no-cache-dir install \
 	&& pip --no-cache-dir install --upgrade \
 		wheel virtualenv \
 	&& pip --no-cache-dir install --upgrade \
-		psutil py3nvml \
+		psutil py3nvml
 
 RUN mkdir /opt/lab
 COPY setup.sh setup_and_run_command.sh setup_and_wait.sh sleeper /opt/lab/
