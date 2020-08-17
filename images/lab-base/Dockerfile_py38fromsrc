@@ -22,6 +22,7 @@ RUN sed 's@archive.ubuntu.com@ubuntu.ethz.ch@' -i /etc/apt/sources.list \
 		libssl-dev libgdbm-dev libc6-dev libsqlite3-dev libffi-dev libdb-dev \
 		libbz2-dev liblzma-dev zlib1g-dev \
 		libexpat1-dev uuid-dev \
+	&& ldconfig \
 	&& apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # building python 3.8 from source
@@ -37,7 +38,10 @@ RUN mkdir /tmp/python-build && cd /tmp/python-build \
 	&& make install -j4 \
 	&& cd /tmp && rm -r /tmp/python-build \
 	&& ln -s /usr/local/bin/python3.8 /usr/local/bin/python \
-	&& ln -s /usr/local/bin/pip3 /usr/local/bin/pip 
+	&& ln -s /usr/local/bin/pip3 /usr/local/bin/pip \
+	&& ldconfig
+
+# the ldconfig makes configs in  /etc/ld.so.conf.d take effect, including /usr/local/bin
 
 #core
 #+ tools for sleeper
