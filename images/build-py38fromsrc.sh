@@ -16,5 +16,11 @@ docker build lab-pytorch-extra \
 	-t ic-registry.epfl.ch/cvlab/lis/lab-pytorch-extra:py38src \
 	--network="host"
 
+docker build lab-python-ml \
+	--build-arg BASE_IMG=ic-registry.epfl.ch/cvlab/lis/lab-pytorch-extra:py38src \
+	-t ic-registry.epfl.ch/cvlab/lis/lab-python-ml:py38src \
+	--network="host"
+
 docker push ic-registry.epfl.ch/cvlab/lis/lab-pytorch-cuda-ext:py38src
 docker push ic-registry.epfl.ch/cvlab/lis/lab-pytorch-extra:py38src
+docker push ic-registry.epfl.ch/cvlab/lis/lab-python-ml:py38src
