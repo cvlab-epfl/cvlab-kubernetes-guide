@@ -14,3 +14,5 @@ RUN pip --no-cache-dir install \
 	mxnet-cu102 gluoncv
 
 ENV MXNET_HOME /cvlabsrc1/cvlab/pytorch_model_zoo/mxnet
+
+ENV TFDS_DATA_DIR /cvlabsrc1/cvlab/tensorflow_datasets
