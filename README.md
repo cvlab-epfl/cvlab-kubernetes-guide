@@ -10,14 +10,7 @@ Other resources on that topic:
 * [https://github.com/epfml/kubernetes-setup](https://github.com/epfml/kubernetes-setup)
 * [https://github.com/kcyu2014/cvlab-kubernetes](https://github.com/kcyu2014/cvlab-kubernetes)
 
-<br>
-<br>
-``` xml
-<outer>
-	<inner />
-</outer>
-```
-<br>
+
 ## Overview
 
 Docker *containers* are the processses running on a docker host (that is our server). They use the same operating system as the host, but have their own internal file system and do no see the host's file system.
@@ -39,16 +32,16 @@ To communicate with the Kubernetes server, we need to:
 I made some base images that should be useful to everyone. It should be easy to start using those, without having to build custom images.
 The user account setup is done through environment variables, so you do not have to place it in your Dockerfile.
 
-[`ic-registry.epfl.ch/cvlab/lis/lab-pytorch-apex:latest`](./images/lab-pytorch-apex/Dockerfile) has PyTorch with the [apex](https://github.com/NVIDIA/apex) multi-precision library and [detectron2](https://github.com/facebookresearch/detectron2).
-Additionally, it is based on the CUDA development image (has `nvcc`), so you can build CUDA extensions here.
-More about apex: [PyTorch half-precision](doc/PyTorchHalfPrecision.md).
-
-[`ic-registry.epfl.ch/cvlab/lis/lab-python-ml:latest`](./images/lab-python-ml/Dockerfile) contains CUDA, PyTorch, Tensorflow, OpenCV as well as other commonly used packages.
+[`ic-registry.epfl.ch/cvlab/lis/lab-python-ml:py38src`](./images/lab-python-ml/Dockerfile) contains CUDA, PyTorch, Tensorflow, OpenCV, [GluonCV](https://gluon-cv.mxnet.io/), [Detectron2](https://github.com/facebookresearch/detectron2) as well as other commonly used packages.
 If you need more, you can extend this and build your own image on top (Dockerfile `FROM`) or let me know that something needs adding.
+
+[`ic-registry.epfl.ch/cvlab/lis/lab-pytorch-extra:py38src`](./images/lab-pytorch-extra/Dockerfile) - smaller image without TF or Gluon.
 
 [`ic-registry.epfl.ch/cvlab/lis/lab-base:cpu`](./images/lab-base/Dockerfile) is the base with just user account setup for cvlabdata mounting, the `:cuda10` version additionally has CUDA installed.
 
 More about images [here](./images).
+
+The GPUs we have at the cluster work faster with [half-precision training](https://pytorch.org/blog/accelerating-training-on-nvidia-gpus-with-pytorch-automatic-mixed-precision/).
 
 ## Defining your containers
 
