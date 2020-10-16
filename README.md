@@ -164,22 +164,13 @@ In my base containers, these variables are used to setup the user account with t
 The images which have this feature so far are:
 
 * `ic-registry.epfl.ch/cvlab/lis/lab-base:cpu`
-* `ic-registry.epfl.ch/cvlab/lis/lab-pytorch-apex:latest:latest`
-* `ic-registry.epfl.ch/cvlab/lis/lab-python-ml:latest`
+* `ic-registry.epfl.ch/cvlab/lis/lab-pytorch-extra:py38src`
+* `ic-registry.epfl.ch/cvlab/lis/lab-python-ml:py38src`
 * and anything built on top of those
 
 ### Startup Command
 
 The `command` field specifies the program to run when the container starts. Also when this command finishes, the container will shut down.
-
-Therefore, if we want the container to wait and let us connect to it, we can specify the command as:
-
-``` yaml
-# sets up the user account and uses the adaptive sleeper to shut down 0.5h after being idle.
-command: ["/opt/lab/setup_and_wait.sh"]
-```
-
-Please remember that this will run and occupy the resources until you explicitly delete the pod or the time runs out.
 
 For example running a python program:
 
@@ -200,10 +191,13 @@ command:
 # start a jupyter server
 command:
   - "/opt/lab/setup_and_run_command.sh"
-  - "jupyter lab --ip=0.0.0.0 --no-browser --notebook-dir=/cvlabdata2/home/lis/kubernetes_example"
+  - "timeout 4h jupyter lab --ip=0.0.0.0 --no-browser --notebook-dir=/cvlabdata2/home/lis/kubernetes_example"
+  # Timeout will ensure the pod closes after some time,
+  # so we don't risk leaving it running forever.
 ```
 
 You can run those examples in `/cvlabdata2/home/lis/kubernetes_example`, I will clear it out periodically.
+
 
 #### Timeout
 
