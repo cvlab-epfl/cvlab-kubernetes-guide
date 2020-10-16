@@ -9,11 +9,8 @@ spec:
   restartPolicy: Never
   containers:
     - name: perform-job
-      image: ic-registry.epfl.ch/cvlab/lis/lab-python-ml:latest
+      image: ic-registry.epfl.ch/cvlab/lis/lab-python-ml:py38src
       imagePullPolicy: Always # load the newest version of the image
-      #command: ["/opt/lab/setup_and_wait.sh"] 
-      #   this one will do nothing and wait, so you can enter the container yourself with
-      #   kubectl exec -it pod_name /bin/bash
       
       command:
       - "/opt/lab/setup_and_run_command.sh"
@@ -64,4 +61,4 @@ spec:
     - name: dshm
       emptyDir:
         medium: Memory
-        sizeLimit: 8Gi
+        sizeLimit: 4Gi

@@ -8,7 +8,7 @@ spec:
   restartPolicy: Never
   containers:
     - name: base-test
-      image: ic-registry.epfl.ch/cvlab/lis/lab-python-ml:latest
+      image: ic-registry.epfl.ch/cvlab/lis/lab-python-ml:py38src
       imagePullPolicy: Always # load the newest version of the image
       
       command: ["/opt/lab/setup_and_wait.sh"] 
