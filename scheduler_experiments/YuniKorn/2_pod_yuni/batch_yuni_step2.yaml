@@ -1,0 +1,71 @@
+apiVersion: v1
+apiVersion: batch/v1
+kind: Job
+metadata:
+  namespace: lab2
+  name: batch-test-l2-a
+spec:
+  completions: 5
+  parallelism: 5
+  template:
+    metadata:
+      name: test-pod-l2-a
+      labels:
+        # app: sleep
+        applicationId: "application-test-l1-a-02"
+        queue: person-a
+    spec:
+      restartPolicy: Never
+      schedulerName: yunikorn
+      containers:
+        - name: test-task
+          image: "alpine:latest"
+          # command: ["sleep", "30"]
+          command: ["/bin/ash", "-c", "
+          echo `date +%H:%M:%S` `hostname`: start 
+          && sleep 180 
+          && echo `date +%H:%M:%S` `hostname`: end"]
+          resources:
+            limits:
+              cpu: "1"
+              memory: "500M"
+            requests:
+              cpu: "1"
+              memory: "500M"
+
+---
+
+apiVersion: v1
+apiVersion: batch/v1
+kind: Job
+metadata:
+  namespace: lab2
+  name: batch-test-l2-b
+spec:
+  completions: 5
+  parallelism: 5
+  template:
+    metadata:
+      name: test-pod-l2-b
+      labels:
+        # app: sleep
+        applicationId: "application-test-l2-b-02"
+        queue: person-b
+    spec:
+      restartPolicy: Never
+      schedulerName: yunikorn
+      containers:
+        - name: test-task
+          image: "alpine:latest"
+          # command: ["sleep", "30"]
+          command: ["/bin/ash", "-c", "
+          echo `date +%H:%M:%S` `hostname`: start 
+          && sleep 180 
+          && echo `date +%H:%M:%S` `hostname`: end"]
+          resources:
+            limits:
+              cpu: "1"
+              memory: "500M"
+            requests:
+              cpu: "1"
+              memory: "500M"

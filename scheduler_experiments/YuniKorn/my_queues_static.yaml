@@ -1,0 +1,70 @@
+partitions:
+  - name: default
+    placementrules:
+    # place at queue = namespace.queue-in-pod-config
+    - name: provided # ideally we would use the "user" rule, but right now YuniKorn can't read kubernetes users
+      create: true
+      parent:
+        name: tag
+        value: namespace
+        parent:
+          name: fixed
+          value: department
+    preemption:
+      enabled: true
+    queues:
+      - name: root
+        submitacl: "*"
+        queues:
+        - name: department
+          resources:  
+            max:
+              vcore: 4000
+              memory: 2200
+          queues:
+          - name: lab1
+            parent: true # allow creating sub-queues per user
+            resources:
+              # guaranteed:
+              #   vcore: 1000
+              #   memory: 512
+              max:
+                vcore: 3000
+                memory: 1600
+            queues:
+              - name: person-c
+                resources:
+                  guaranteed:
+                    vcore: 1000
+                    memory: 512
+
+          - name: lab2
+            parent: true # allow creating sub-queues per user
+            resources:
+              # guaranteed:
+              #   vcore: 1000
+              #   memory: 512
+              max:
+                vcore: 3000
+                memory: 1600
+            queues:
+            - name: person-a
+              resources:
+                guaranteed:
+                  vcore: 1000
+                  memory: 512
+            - name: person-b
+              resources:
+                guaranteed:
+                  vcore: 1000
+                  memory: 512
+            
+
+    # limits:
+    # - limit: my-total-capacity
+    #   users: 
+    #     - "*"
+    #     maxresources:
+    #       vcore: 4000
+    #       memory: 2200
+    

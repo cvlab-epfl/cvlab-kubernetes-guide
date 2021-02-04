@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: p0-sched
+  labels:
+    app: sleep
+    applicationId: "application-sleep-0009"
+    queue: "root.lab1"
+spec:
+  restartPolicy: Never
+  schedulerName: yunikorn
+  containers:
+    - name: test-task
+      image: "alpine:latest"
+      # command: ["sleep", "30"]
+      command: ["/bin/ash", "-c", "
+      echo `date +%H:%M:%S` `hostname`: start 
+      && sleep 30 
+      && echo `date +%H:%M:%S` `hostname`: end"]
+      # resources:
+      #   limits:
+      #     cpu:     4
+      #     memory:  2Gi
+      #   requests:
+      #     cpu:     2
+      #     memory:  1Gi
+
+        # limits:
+        #   cpu: 1
+        # requests:
+        #   cpu: 1
