@@ -1,0 +1,32 @@
+apiVersion: batch.volcano.sh/v1alpha1
+kind: Job
+metadata:
+  name: jobs-p2
+spec:
+  schedulerName: volcano
+  queue: q-p2
+
+  # minAvailable represents the minimum number of running pods required to run the job. Only when the number of running pods is not less than minAvailable can the job be considered as running.
+  #minAvailable: 3 
+  #priorityClassName: high-priority
+  policies:
+    - event: PodEvicted
+      action: RestartJob
+  maxRetry: 5
+  tasks:
+    - replicas: 5
+      name: task-p2
+      restartPolicy: OnFailure
+      template:
+        metadata:
+          name: template-p2
+        spec:
+          containers:
+            - name: worker-p2
+              image: "alpine:latest"
+              command: ["/bin/sleep", "180"]
+              resources:
+                limits:
+                  nvidia.com/gpu: 1
+                requests:
+                  nvidia.com/gpu: 1
