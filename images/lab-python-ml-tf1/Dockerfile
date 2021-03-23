@@ -8,10 +8,10 @@ RUN apt-get update \
 	&& ldconfig \
 	&& apt-get clean && rm -rf /var/lib/apt/lists/*
 
+RUN pip --no-cache-dir install python-prctl
+
 RUN pip --no-cache-dir install \
-	xmltodict pyyaml natsort ujson sklearn \
-	python-prctl youtube-dl \
-	pillow imageio \
+	xmltodict pyyaml natsort ujson sklearn youtube-dl \
 	pytest pytest-cov pytest-datafiles pylint coverage
 
 # tensorflow
