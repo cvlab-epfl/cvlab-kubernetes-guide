@@ -3,12 +3,11 @@ ARG BASE_IMG
 FROM ${BASE_IMG}
 
 RUN apt-get update \
-	&& apt-get -y install libpcap-dev \
+	&& apt-get -y install ffmpeg libsm6 libxext-dev libxrender-dev libcap-dev \
 	&& ldconfig \
 	&& apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN pip --no-cache-dir install \
-	python-prctl \
 	xmltodict pyyaml natsort ujson sklearn youtube-dl \
 	pytest pytest-cov pytest-datafiles pylint coverage
 
