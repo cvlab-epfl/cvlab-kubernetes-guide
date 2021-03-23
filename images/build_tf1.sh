@@ -7,12 +7,12 @@ docker build lab-base \
 	--network="host"
 
 docker build lab-pytorch-cuda-ext \
-	--build-arg BASE_IMG=ic-registry.epfl.ch/cvlab/lis/lab-base:cuda10.2-devel \
+	--build-arg BASE_IMG=ic-registry.epfl.ch/cvlab/lis/lab-base:py36 \
 	-t ic-registry.epfl.ch/cvlab/lis/lab-pytorch-cuda-ext:py36 \
 	--network="host"
 
 docker build lab-python-ml-tf1 \
-	--build-arg BASE_IMG=ic-registry.epfl.ch/cvlab/lis/lab-pytorch-cuda-ext:py38-pytorch18 \
+	--build-arg BASE_IMG=ic-registry.epfl.ch/cvlab/lis/lab-pytorch-cuda-ext:py36 \
 	-t ic-registry.epfl.ch/cvlab/lis/lab-python-ml:py36-tf1 \
 	--network="host"
 
