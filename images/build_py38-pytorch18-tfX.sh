@@ -22,7 +22,7 @@ docker build lab-pytorch-cuda-ext \
 # 	--network="host"
 
 docker build lab-python-ml-tf1 \
-	--build-arg BASE_IMG=ic-registry.epfl.ch/cvlab/lis/lab-pytorch-extra:py38-pytorch18 \
+	--build-arg BASE_IMG=ic-registry.epfl.ch/cvlab/lis/lab-pytorch-cuda-ext:py38-pytorch18 \
 	-t ic-registry.epfl.ch/cvlab/lis/lab-python-ml:py38-pytorch18-tf1 \
 	--network="host"
 
