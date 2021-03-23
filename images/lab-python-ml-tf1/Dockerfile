@@ -16,7 +16,4 @@ RUN pip --no-cache-dir install \
 	xmltodict pyyaml natsort ujson sklearn youtube-dl \
 	pytest pytest-cov pytest-datafiles pylint coverage
 
-
-
 ENV TFDS_DATA_DIR /cvlabsrc1/cvlab/tensorflow_datasets
-
