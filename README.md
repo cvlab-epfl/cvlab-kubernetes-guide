@@ -25,7 +25,7 @@ The rationale is that Kubernetes will allocate resources when we need to run a j
 To communicate with the Kubernetes server, we need to:
 
 * [install kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-* get the config files from IC admins (`user.config`, `user.crt`, `user.key`), copy them to `~/.kube` and rename `user.config` to `config`.
+* get the config files from [IC admins](https://www.epfl.ch/schools/ic/it/en/it-service-ic-it/) (`user.config`, `user.crt`, `user.key`), copy them to `~/.kube` and rename `user.config` to `config`.
 
 ## Pre-built images
 
