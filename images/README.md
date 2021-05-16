@@ -72,6 +72,23 @@ You can make additional setup steps by putting a `.sh` script in `/opt/lab/setup
 * PyTorch and accessories
 * OpenCV
 
+#### lab-pytorch-extra
+
+[`ic-registry.epfl.ch/cvlab/lis/lab-pytorch-extra`](./lab-pytorch-extra/Dockerfile)
+
+Extra libs on top of PyTorch
+
+- [detectron2](https://github.com/facebookresearch/detectron2) - object detection
+- [PyTorch 3D](https://github.com/facebookresearch/pytorch3d)
+
+#### lab-python-ml
+
+[`ic-registry.epfl.ch/cvlab/lis/lab-python-ml`](./lab-python-ml/Dockerfile)
+
+- TensorFlow
+- [GluonCV](https://cv.gluon.ai/model_zoo/index.html) - collection of trained networks for various vision tasks
+
+
 #### lab-pytorch-apex
 
 [`ic-registry.epfl.ch/cvlab/lis/lab-pytorch-apex`](./lab-pytorch-apex/Dockerfile)
@@ -82,11 +99,6 @@ Extra libs on top of PyTorch
 - [detectron2](https://github.com/facebookresearch/detectron2) - object detection
 - [PyTorch 3D](https://github.com/facebookresearch/pytorch3d)
 
-#### lab-python-ml
-
-[`ic-registry.epfl.ch/cvlab/lis/lab-python-ml`](./lab-python-ml/Dockerfile)
-
-Adds Tensorflow to the above.
 
 #### lab-colmap
 

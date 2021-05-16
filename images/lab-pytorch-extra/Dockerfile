@@ -27,8 +27,14 @@ RUN pip --no-cache-dir install \
 	cityscapesScripts shapely
 
 # PyTorch 3D https://github.com/facebookresearch/pytorch3d
+#	https://github.com/facebookresearch/pytorch3d/blob/master/INSTALL.md
+#	NvidiaCUB is used in Pytorch3D build 
+ENV NVIDIACUB_VERSION="1.12.0"
+RUN mkdir /usr/lib/nvidiacub && cd /usr/lib/nvidiacub \
+	&& wget "https://github.com/NVIDIA/cub/archive/refs/tags/1.12.0.tar.gz" -O nvidiacub.tar.gz \
+	&& tar --strip-components=1 -xf nvidiacub.tar.gz \
+	&& rm nvidiacub.tar.gz
+ENV CUB_HOME="/usr/lib/nvidiacub"
+
 RUN pip --no-cache-dir install \
 	'git+https://github.com/facebookresearch/pytorch3d.git'
-
-
-# APEX is now merged into pytorch1.6
