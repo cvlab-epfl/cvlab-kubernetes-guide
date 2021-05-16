@@ -29,7 +29,7 @@ RUN sed 's@archive.ubuntu.com@ubuntu.ethz.ch@' -i /etc/apt/sources.list \
 # Compared to python docker, we disable "--without-ensurepip"
 # https://github.com/docker-library/python/blob/1b78ff417e41b6448d98d6dd6890a1f95b0ce4be/3.8/buster/Dockerfile
 
-ENV PYTHON_VERSION="3.8.8"
+ENV PYTHON_VERSION="3.8.10"
 RUN mkdir /tmp/python-build && cd /tmp/python-build \
 	&& wget "https://www.python.org/ftp/python/$PYTHON_VERSION/Python-$PYTHON_VERSION.tar.xz" -O python.tar.xz \
 	&& tar --strip-components=1 -xf python.tar.xz \
