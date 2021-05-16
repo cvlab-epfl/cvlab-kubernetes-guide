@@ -19,3 +19,5 @@ docker build lab-python-ml-tf1 \
 # docker push ic-registry.epfl.ch/cvlab/lis/lab-pytorch-cuda-ext:py38src
 # docker push ic-registry.epfl.ch/cvlab/lis/lab-pytorch-extra:py38src
 # docker push ic-registry.epfl.ch/cvlab/lis/lab-python-ml:py38src
+
+docker push ic-registry.epfl.ch/cvlab/lis/lab-python-ml:py36-tf1

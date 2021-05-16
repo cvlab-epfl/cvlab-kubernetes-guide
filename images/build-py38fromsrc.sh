@@ -1,8 +1,9 @@
 
-docker pull nvidia/cuda:10.2-cudnn7-devel-ubuntu18.04
+CUDA_IMG=nvidia/cuda:10.2-cudnn8-devel-ubuntu18.04
+docker pull $CUDA_IMG
 
 docker build lab-base --file lab-base/Dockerfile_py38fromsrc \
-	--build-arg BASE_IMG=nvidia/cuda:10.2-cudnn7-devel-ubuntu18.04 \
+	--build-arg BASE_IMG=$CUDA_IMG \
 	-t ic-registry.epfl.ch/cvlab/lis/lab-base:py38src \
 	--network="host"
 

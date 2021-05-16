@@ -1,9 +1,9 @@
-# Install python and its packages
+# Extra ML libs:
+# * tensorflow
+# * gluonCV  https://cv.gluon.ai/
 
 ARG BASE_IMG
 FROM ${BASE_IMG}
-# FROM  ic-registry.epfl.ch/cvlab/lis/lab-pytorch-apex:latest
-LABEL maintainer="Krzysztof Lis <krzysztof.lis@epfl.ch>"
 
 # tensorflow
 RUN pip --no-cache-dir install \

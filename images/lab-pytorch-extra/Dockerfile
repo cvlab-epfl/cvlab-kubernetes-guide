@@ -5,8 +5,6 @@
 
 ARG BASE_IMG
 FROM ${BASE_IMG}
-# FROM  ic-registry.epfl.ch/cvlab/lis/lab-pytorch-cuda-ext:latest
-LABEL maintainer="Krzysztof Lis <krzysztof.lis@epfl.ch>"
 
 # The libraries apex and detectron2 have Cuda pytorch extensions.
 # We build on docker, without a GPU, so pytorch will not know which cuda level to use.
