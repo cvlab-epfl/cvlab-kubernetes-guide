@@ -7,7 +7,7 @@ LABEL maintainer="Krzysztof Lis <krzysztof.lis@epfl.ch>"
 # install linux packages + python
 RUN sed 's@archive.ubuntu.com@ubuntu.ethz.ch@' -i /etc/apt/sources.list \
 	&& apt-get update \
-	&& apt-get --no-install-recommends -y install \
+	&& DEBIAN_FRONTEND="noninteractive" TZ="Europe/Zurich" apt-get --no-install-recommends -y install \
 		sudo htop tmux screen locate \
 		mc less vim git fish tcsh \
 		curl wget \
@@ -16,9 +16,7 @@ RUN sed 's@archive.ubuntu.com@ubuntu.ethz.ch@' -i /etc/apt/sources.list \
 		python3 python3-dev python3-pip python-is-python3 \
 		hdf5-tools h5utils \
 		libgomp1 ninja-build \
-	&& apt-get clean && rm -rf /var/lib/apt/lists/* \
-	&& ln -s /usr/bin/python3 /usr/local/bin/python \
-	&& ln -s /usr/bin/pip3 /usr/local/bin/pip 
+	&& apt-get clean && rm -rf /var/lib/apt/lists/* 
 
 # core
 # + tools for sleeper
