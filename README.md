@@ -33,15 +33,16 @@ https://docs.run.ai/Administrator/Researcher-Setup/cli-install/
 ### Job management
 
 * Submit jobs with `runai submit` [(doc)](https://docs.run.ai/Researcher/cli-reference/runai-submit/).  
-
 Our (runai submit script](doc/runai_one.sh) can make that simple.
 First, fill in `MY_WORK_DIR`, `CLUSTER_USER`, `CLUSTER_USER_ID` in the script to match your user.
 Then submit jobs like this:
-  - `bash runai_one.sh name-hello-1 1 "python hello.py"`  
-	creates a job names `name-hello-1`, uses 1 GPU, enters `MY_WORK_DIR` directory and runs `python hello.py`
+    - `bash runai_one.sh job_name num_gpu "command"`
 
-	- `bash runai_one.sh name-hello-2 0.5 "python hello_half.py"`  
-	creates a job names `name-hello-2`, receives half of a GPUs memory (2 such jobs can fit on one GPU!), enters `MY_WORK_DIR` directory and runs `python hello_half.py`
+    - `bash runai_one.sh name-hello-1 1 "python hello.py"`  
+	  creates a job named `name-hello-1`, **uses 1 GPU**, enters `MY_WORK_DIR` directory and runs `python hello.py`  
+	  
+    - `bash runai_one.sh name-hello-2 0.5 "python hello_half.py"`  
+	  creates a job named `name-hello-2`, receives **half of a GPUs memory** (2 such jobs can fit on one GPU!), enters `MY_WORK_DIR` directory and runs `python hello_half.py`
 
 
 Here is how it uses the submit command:
@@ -71,7 +72,7 @@ runai submit $arg_job_name \
 
 * Run an interactive console inside the container `runai bash jobname`.
 
-**Training vs interactive**: By default jobs are *training* mode, which means they can use GPUs beyond the lab's quota of 28, but can be stopped and restarted (so its worth checkpointing etc). Jobs can be made *interactive* (non-preemptible) with the `--interactive` option of `runai submit`, but they are stopped after 12 hours, and there is a limited number of those allowed in the lab, so please do not create too many simultaneously.
+**Training vs interactive**: By default [jobs are *training* mode](https://docs.run.ai/Researcher/Walkthroughs/walkthrough-train/), which means they can use GPUs beyond the lab's quota of 28, but can be stopped and restarted (so its worth checkpointing etc). Jobs can be made *interactive* (non-preemptible) with the `--interactive` option of `runai submit`, but they are stopped after 12 hours, and there is a limited number of those allowed in the lab, so please do not create too many simultaneously.
 
 
 
