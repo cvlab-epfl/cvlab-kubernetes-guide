@@ -75,9 +75,35 @@ runai submit $arg_job_name \
 **Training vs interactive**: By default [jobs are *training* mode](https://docs.run.ai/Researcher/Walkthroughs/walkthrough-train/), which means they can use GPUs beyond the lab's quota of 28, but can be stopped and restarted (so its worth checkpointing etc). Jobs can be made *interactive* (non-preemptible) with the `--interactive` option of `runai submit`, but they are stopped after 12 hours, and there is a limited number of those allowed in the lab, so please do not create too many simultaneously.
 
 
+### Asking the admins for help
 
+The cluster machines sometimes get stuck and need to be restarted, or there are bugs in RunAI.
+In these cases, we need to ask the ICIT admins for help. 
+To localize the problem, they need good diagnostic information from you.
 
+The [detailed procedure can be found here](https://icitdocs.epfl.ch/display/clusterdocs/Good+hints+to+open+a+ticket). Here is the copy of this procedure, so that you may view it outside of the EPFL network:
 
+**To open a ticket, please send an email to support-icit@epfl.ch.**
+
+* Chose an explicit **subject**
+* qualify your ticket by providing all the information useful to resolve your issue
+* attach your **yaml file** or the **runai command** used to start your job
+* attach pod's **log information** (replace <lab> by your lab name)
+  * find your job:
+  ```
+  $ runai list job -p <lab>
+  $ kubectl get pods -n runai-<lab>
+  ```
+  get pod's description
+  ```
+  $ runai describe job <job name> -p <lab>
+  $ kubectl describe pod <pod name> -n runai-<lab>
+  ```
+  get pod's log
+  $ runai logs pod name> -p <lab>
+  $ kubectl logs <pod name> -n runai-<lab>
+  ```
+* provide others log message you can have
 
 ## Overview
 
