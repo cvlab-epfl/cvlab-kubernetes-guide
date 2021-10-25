@@ -96,22 +96,23 @@ The [detailed procedure can be found here](https://icitdocs.epfl.ch/display/clus
 * Chose an explicit **subject**
 * qualify your ticket by providing all the information useful to resolve your issue
 * attach your **yaml file** or the **runai command** used to start your job
-* attach pod's **log information** (replace <lab> by your lab name)
-  * find your job:
+* attach job/pod's **log information** (replace `<lab>` by your lab name)
+  * find your job/pod:
   ```
   $ runai list job -p <lab>
   $ kubectl get pods -n runai-<lab>
   ```
-  get pod's description
+  * get job/pod's description
   ```
   $ runai describe job <job name> -p <lab>
   $ kubectl describe pod <pod name> -n runai-<lab>
   ```
-  get pod's log
+  * get job/pod's log
+  ```
   $ runai logs pod name> -p <lab>
   $ kubectl logs <pod name> -n runai-<lab>
   ```
-* provide others log message you can have
+* provide others log messages you can have
 
 ## Overview
 
