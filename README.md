@@ -33,7 +33,7 @@ https://docs.run.ai/Administrator/Researcher-Setup/cli-install/
 ### Job management
 
 * Submit jobs with `runai submit` [(doc)](https://docs.run.ai/Researcher/cli-reference/runai-submit/).  
-Our (runai submit script](doc/runai_one.sh) can make that simple.
+Our [runai submit script](doc/runai_one.sh) can make that simple.
 First, fill in `MY_WORK_DIR`, `CLUSTER_USER`, `CLUSTER_USER_ID` in the script to match your user.
 Then submit jobs like this:
     - `bash runai_one.sh job_name num_gpu "command"`
