@@ -62,6 +62,14 @@ runai submit $arg_job_name \
 	--command -- /opt/lab/setup_and_run_command.sh "cd $MY_WORK_DIR && $arg_cmd"
 ```
 
+**Choice of docker images**: 
+The mechanism which sets up the user/group will not work on docker images built from scratch, because it uses [these setup scripts](./images/lab-base).
+The details of our images are in the [images](./images) section of this repository.
+You are welcome to use these images or build upon them.
+For direct use I recommend `ic-registry.epfl.ch/cvlab/lis/lab-python-ml:cuda10` as it has fairly modern versions of various scientific libraries.
+
+**Volume mounts**: The default volume mounts in the script are for CVLAB (cvlabdata volumes). Please change them if you are in a different lab.
+
 * List jobs in the lab: `runai list jobs`
 
 * Find out the status of your job `runai describe job jobname`
