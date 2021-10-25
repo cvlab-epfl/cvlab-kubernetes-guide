@@ -1,14 +1,81 @@
-# Kubernetes at CVLab
+# ICCluster at CVLab
 
 If you find a mistake, something is not working, you know a better way to do it,
 or you need a new image to be built, please let me know or open an issue here.
 *\- Kris*
 
-Other resources on that topic:
+## Quick start with RunAI
 
-* [https://github.com/EPFL-IC/caas](https://github.com/EPFL-IC/caas)
-* [https://github.com/epfml/kubernetes-setup](https://github.com/epfml/kubernetes-setup)
-* [https://github.com/kcyu2014/cvlab-kubernetes](https://github.com/kcyu2014/cvlab-kubernetes)
+### Install RunAI CLI
+
+Things to download and put in $PATH:
+
+* runai https://github.com/run-ai/runai-cli/releases
+* helm
+    https://github.com/helm/helm/releases
+    or
+    brew install helm
+* kubectl (most probably already there)
+
+More on the CLI installation:
+https://docs.run.ai/Administrator/Researcher-Setup/cli-install/
+
+
+### Login
+
+* Find your user/password in emails or ask IC-admins if you have not received it.
+* Connect to <https://app.run.ai> and you make sure the user/password works.
+* Download the config file: <http://install.iccluster.epfl.ch/scripts/soft/runai/config> and place it in `~/.kube/`
+* In a console, to login to RunAI, run: `runai login`
+* In a console, configure your default project with: `runai config project cvlab`
+* Test if you see the lab's jobs `runai list jobs`
+
+### Job management
+
+* Submit jobs with `runai submit` [(doc)](https://docs.run.ai/Researcher/cli-reference/runai-submit/).  
+
+Our (runai submit script](doc/runai_one.sh) can make that simple.
+First, fill in `MY_WORK_DIR`, `CLUSTER_USER`, `CLUSTER_USER_ID` in the script to match your user.
+Then submit jobs like this:
+  - `bash runai_one.sh name-hello-1 1 "python hello.py"`  
+	creates a job names `name-hello-1`, uses 1 GPU, enters `MY_WORK_DIR` directory and runs `python hello.py`
+
+	- `bash runai_one.sh name-hello-2 0.5 "python hello_half.py"`  
+	creates a job names `name-hello-2`, receives half of a GPUs memory (2 such jobs can fit on one GPU!), enters `MY_WORK_DIR` directory and runs `python hello_half.py`
+
+
+Here is how it uses the submit command:
+```bash
+runai submit $arg_job_name \
+	-i $MY_IMAGE \
+	--gpu $arg_gpu \
+	--pvc runai-pv-cvlabdata1:/cvlabdata1 \
+	--pvc runai-pv-cvlabdata2:/cvlabdata2 \
+	--pvc runai-pv-cvlabsrc1:/cvlabsrc1 \
+	--large-shm \
+	-e CLUSTER_USER=$CLUSTER_USER \
+	-e CLUSTER_USER_ID=$CLUSTER_USER_ID \
+	-e CLUSTER_GROUP_NAME=$CLUSTER_GROUP_NAME \
+	-e CLUSTER_GROUP_ID=$CLUSTER_GROUP_ID \
+	-e TORCH_HOME="/cvlabsrc1/cvlab/pytorch_model_zoo" \
+	--command -- /opt/lab/setup_and_run_command.sh "cd $MY_WORK_DIR && $arg_cmd"
+```
+
+* List jobs in the lab: `runai list jobs`
+
+* Find out the status of your job `runai describe job jobname`
+
+* Stop running jobs with `runai delete jobname`. Also if you want to submit another job with the same name, you need to delete the existing one which occupies the name.
+
+* View logs `runai logs jobname`. Add `--tail 64` to see 64 latest lines (or other number)
+
+* Run an interactive console inside the container `runai bash jobname`.
+
+**Training vs interactive**: By default jobs are *training* mode, which means they can use GPUs beyond the lab's quota of 28, but can be stopped and restarted (so its worth checkpointing etc). Jobs can be made *interactive* (non-preemptible) with the `--interactive` option of `runai submit`, but they are stopped after 12 hours, and there is a limited number of those allowed in the lab, so please do not create too many simultaneously.
+
+
+
+
 
 
 ## Overview
