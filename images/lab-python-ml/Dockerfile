@@ -7,7 +7,7 @@ LABEL maintainer="Krzysztof Lis <krzysztof.lis@epfl.ch>"
 
 # tensorflow
 RUN pip --no-cache-dir install \
-	tensorboard tensorflow-gpu
+	tensorboard tensorflow-gpu tensorflow_datasets
 
 # GluonCV - repository of pretrained algorithms
 RUN pip --no-cache-dir install \
