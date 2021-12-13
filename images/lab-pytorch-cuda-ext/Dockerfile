@@ -2,8 +2,6 @@
 
 ARG BASE_IMG
 FROM ${BASE_IMG}
-# FROM  ic-registry.epfl.ch/cvlab/lis/lab-base:cuda10.1-devel
-LABEL maintainer="Krzysztof Lis <krzysztof.lis@epfl.ch>"
 
 # TF fails to find "libcudart.so.10.1"
 # First, theres /usr/local/nvidia/lib64 in LD_LIBRARY_PATH, but /usr/local/nvidia does not exist
@@ -29,7 +27,8 @@ RUN pip --no-cache-dir install \
 	pyyaml easydict natsort \
 	xonsh \
 	gpustat \
-	pycocotools 	
+	pycocotools \
+	gdown wget
 
 RUN python -c "import imageio; imageio.plugins.freeimage.download()"
 
