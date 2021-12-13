@@ -30,7 +30,8 @@ RUN pip --no-cache-dir install \
 	xonsh \
 	gpustat \
 	pycocotools \
-	gdown wget
+	gdown wget \
+	show-image
 
 RUN python -c "import imageio; imageio.plugins.freeimage.download()"
 
