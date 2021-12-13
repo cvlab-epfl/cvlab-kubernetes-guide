@@ -11,7 +11,7 @@ RUN sed 's@archive.ubuntu.com@ubuntu.ethz.ch@' -i /etc/apt/sources.list \
 	&& apt-get update \
 	&& apt-get --no-install-recommends -y install \
 		sudo htop tmux screen locate \
-		mc less vim git \
+		mc less vim git fish tcsh \
 		curl wget ca-certificates \
 		xz-utils p7zip-full \
 		cmake \
