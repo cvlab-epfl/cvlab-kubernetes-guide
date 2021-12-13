@@ -6,8 +6,8 @@ FROM ${BASE_IMG}
 # TF fails to find "libcudart.so.10.1"
 # First, theres /usr/local/nvidia/lib64 in LD_LIBRARY_PATH, but /usr/local/nvidia does not exist
 # We link the existing /usr/local/cuda-10.2 to fill that role.
-RUN ln -s /usr/local/cuda-10.2 /usr/local/nvidia \
-	&& ln -s /usr/local/cuda-10.2/lib64/libcudart.so.10.2 /usr/local/nvidia/lib64/libcudart.so.10.1
+# RUN ln -s /usr/local/cuda-10.2 /usr/local/nvidia \
+# 	&& ln -s /usr/local/cuda-10.2/lib64/libcudart.so.10.2 /usr/local/nvidia/lib64/libcudart.so.10.1
 
 # scientific
 RUN pip --no-cache-dir install \
@@ -16,8 +16,10 @@ RUN pip --no-cache-dir install \
 	pillow imageio h5py \
 	einops \
 	pandas \
-	cython numba \
 	opencv-contrib-python-headless
+
+RUN pip --no-cache-dir install \
+	cython numba
 
 # interactive
 RUN pip --no-cache-dir install \
