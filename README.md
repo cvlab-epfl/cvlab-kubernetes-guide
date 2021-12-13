@@ -23,9 +23,9 @@ https://docs.run.ai/Administrator/Researcher-Setup/cli-install/
 
 ### Login
 
-* Find your user/password in emails or ask IC-admins if you have not received it.
-* Connect to <https://app.run.ai> and you make sure the user/password works.
-* Download the config file: <http://install.iccluster.epfl.ch/scripts/soft/runai/config> and place it in `~/.kube/`
+* Find your user/password in emails or ask IC-admins if you have not received it. [Asking for access](https://icitdocs.epfl.ch/display/clusterdocs/Getting+Started+with+RunAI+SAML). New logins seem possible through a web link too so perhaps password is not mandatory.
+* Connect to <https://app.run.ai> and you make sure the user/password/web-authentication works.
+* Download the config file: <https://icitdocs.epfl.ch/download/attachments/3211266/config> and place it in `~/.kube/`. If the download link changes, it is likely to be listed [here](https://icitdocs.epfl.ch/display/clusterdocs/Getting+Started+with+RunAI+SAML).
 * In a console, to login to RunAI, run: `runai login`
 * In a console, configure your default project with: `runai config project cvlab`
 * Test if you see the lab's jobs `runai list jobs`
