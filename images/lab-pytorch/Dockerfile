@@ -47,3 +47,14 @@ RUN pip --no-cache-dir install \
 	 -f https://download.pytorch.org/whl/cu113/torch_stable.html \
 	&& pip --no-cache-dir install tensorboard \
 	&& pip --no-cache-dir install --no-deps kornia 
+
+# detectron2
+RUN pip --no-cache-dir install \
+	detectron2 \
+	cityscapesScripts shapely \
+	-f https://dl.fbaipublicfiles.com/detectron2/wheels/cu113/torch1.10/index.html
+
+# pytorch3d
+RUN pip --no-cache-dir install \
+	pytorch3d \
+	-f https://dl.fbaipublicfiles.com/pytorch3d/packaging/wheels/py38_cu113_pyt1101/download.html
