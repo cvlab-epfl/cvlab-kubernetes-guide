@@ -15,13 +15,13 @@ docker build lab-pytorch \
 	-t ic-registry.epfl.ch/cvlab/lis/lab-pytorch:$BRANCH \
 	--network="host"
 
-# docker build lab-python-ml \
-# 	--build-arg BASE_IMG=ic-registry.epfl.ch/cvlab/lis/lab-pytorch:$BRANCH \
-# 	-t ic-registry.epfl.ch/cvlab/lis/lab-python-ml:$BRANCH \
-# 	--network="host"
+docker build lab-python-ml \
+	--build-arg BASE_IMG=ic-registry.epfl.ch/cvlab/lis/lab-pytorch:$BRANCH \
+	-t ic-registry.epfl.ch/cvlab/lis/lab-python-ml:$BRANCH \
+	--network="host"
 
 
-# docker run -it ic-registry.epfl.ch/cvlab/lis/lab-pytorch:$BRANCH /bin/bash
+# docker run -it ic-registry.epfl.ch/cvlab/lis/lab-python-ml:$BRANCH /bin/bash
 
 #docker login ic-registry.epfl.ch
 

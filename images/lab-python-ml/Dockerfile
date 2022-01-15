@@ -10,7 +10,7 @@ FROM ${BASE_IMG}
 #	here we reinstate the right opencv package
 RUN pip --no-cache-dir install mxnet-cu112 gluoncv \
 	&& pip uninstall --yes opencv-python \
-	&& pip --no-cache-dir install --force-reinstall opencv-contrib-python-headless
+	&& pip --no-cache-dir install opencv-contrib-python-headless
 
 ENV MXNET_HOME /cvlabsrc1/cvlab/pytorch_model_zoo/mxnet
 
