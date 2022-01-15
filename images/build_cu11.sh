@@ -10,7 +10,7 @@ docker build lab-base --file lab-base/Dockerfile \
 	-t ic-registry.epfl.ch/cvlab/lis/lab-base:$BRANCH \
 	--network="host"
 
-docker build lab-pytorch-cuda-ext \
+docker build lab-pytorch \
 	--build-arg BASE_IMG=ic-registry.epfl.ch/cvlab/lis/lab-base:$BRANCH \
 	-t ic-registry.epfl.ch/cvlab/lis/lab-pytorch:$BRANCH \
 	--network="host"
@@ -23,5 +23,9 @@ docker build lab-pytorch-cuda-ext \
 
 # docker run -it ic-registry.epfl.ch/cvlab/lis/lab-pytorch:$BRANCH /bin/bash
 
+#docker login ic-registry.epfl.ch
+
 # docker push ic-registry.epfl.ch/cvlab/lis/lab-pytorch:$BRANCH
 # docker push ic-registry.epfl.ch/cvlab/lis/lab-python-ml:$BRANCH
+
+#rm ~/.docker/config.json
