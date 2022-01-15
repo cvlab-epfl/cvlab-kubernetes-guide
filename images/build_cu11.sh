@@ -1,7 +1,7 @@
 
 
-CU_IMAGE=nvidia/cuda:11.4.2-cudnn8-devel-ubuntu20.04
-BRANCH=cuda11
+CU_IMAGE=nvidia/cuda:11.3.1-cudnn8-devel-ubuntu20.04
+BRANCH=cuda113
 
 docker pull $CU_IMAGE
 

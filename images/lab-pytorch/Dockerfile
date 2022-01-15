@@ -39,12 +39,11 @@ RUN python -c "import imageio; imageio.plugins.freeimage.download()"
 # use shared cache for pytorch
 ENV TORCH_MODEL_ZOO /cvlabsrc1/cvlab/pytorch_model_zoo/models
 ENV TORCH_HOME /cvlabsrc1/cvlab/pytorch_model_zoo 
-
+# install pytorch for cuda11
 RUN pip --no-cache-dir install \
-	torch \
-	torchvision \
-	future tensorboard \
+	torch==1.10.1+cu113 \
+	torchvision==0.11.2+cu113 \
+	torchaudio==0.10.1+cu113 \
+	 -f https://download.pytorch.org/whl/cu113/torch_stable.html \
+	&& pip --no-cache-dir install tensorboard \
 	&& pip --no-cache-dir install --no-deps kornia 
-# future is for caffe2 / torch.tensorboard
-# kornia has deps on old pytorch versions, so ignore its deps
-
