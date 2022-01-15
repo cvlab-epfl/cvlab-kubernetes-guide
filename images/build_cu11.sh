@@ -2,6 +2,7 @@
 
 CU_IMAGE=nvidia/cuda:11.3.1-cudnn8-devel-ubuntu20.04
 BRANCH=cuda113
+BRANCH_PUBLISH=cuda11
 
 docker pull $CU_IMAGE
 
@@ -27,5 +28,10 @@ docker build lab-python-ml \
 
 # docker push ic-registry.epfl.ch/cvlab/lis/lab-pytorch:$BRANCH
 # docker push ic-registry.epfl.ch/cvlab/lis/lab-python-ml:$BRANCH
+
+# docker tag ic-registry.epfl.ch/cvlab/lis/lab-pytorch:$BRANCH ic-registry.epfl.ch/cvlab/lis/lab-pytorch:$BRANCH_PUBLISH
+# docker tag ic-registry.epfl.ch/cvlab/lis/lab-python-ml:$BRANCH ic-registry.epfl.ch/cvlab/lis/lab-python-ml:$BRANCH_PUBLISH
+# docker push ic-registry.epfl.ch/cvlab/lis/lab-pytorch:$BRANCH_PUBLISH
+# docker push ic-registry.epfl.ch/cvlab/lis/lab-python-ml:$BRANCH_PUBLISH
 
 #rm ~/.docker/config.json

@@ -135,7 +135,7 @@ To communicate with the Kubernetes server, we need to:
 I made some base images that should be useful to everyone. It should be easy to start using those, without having to build custom images.
 The user account setup is done through environment variables, so you do not have to place it in your Dockerfile.
 
-[`ic-registry.epfl.ch/cvlab/lis/lab-python-ml:cuda11`](./images/lab-python-ml/Dockerfile) contains CUDA, PyTorch, Tensorflow, OpenCV, [GluonCV](https://gluon-cv.mxnet.io/), [Detectron2](https://github.com/facebookresearch/detectron2) as well as other commonly used packages.
+[`ic-registry.epfl.ch/cvlab/lis/lab-python-ml:cuda11`](./images/lab-python-ml/Dockerfile) contains CUDA, PyTorch, Tensorflow, OpenCV, [GluonCV](https://gluon-cv.mxnet.io/), [Detectron2](https://github.com/facebookresearch/detectron2), [PyTorch3D](https://pytorch3d.org/) as well as other commonly used packages.
 If you need more, you can extend this and build your own image on top (Dockerfile `FROM`) or let me know that something needs adding.
 
 [`ic-registry.epfl.ch/cvlab/lis/lab-pytorch:cuda11`](./images/lab-pytorch/Dockerfile) - smaller image without TF or Gluon.
