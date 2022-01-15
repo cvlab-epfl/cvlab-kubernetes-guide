@@ -8,7 +8,8 @@ FROM ${BASE_IMG}
 # GluonCV - repository of pretrained algorithms
 #	gluon also install some other opencv, which fails to load (with missing lib libGL.so.1)
 #	here we reinstate the right opencv package
-RUN pip --no-cache-dir install mxnet-cu112 gluoncv \
+RUN pip uninstall --yes opencv-contrib-python-headless \
+	&& pip --no-cache-dir install mxnet-cu112 gluoncv \
 	&& pip uninstall --yes opencv-python \
 	&& pip --no-cache-dir install opencv-contrib-python-headless
 
