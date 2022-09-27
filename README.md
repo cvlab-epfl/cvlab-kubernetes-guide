@@ -30,7 +30,7 @@ https://docs.run.ai/Administrator/Researcher-Setup/cli-install/
 * In a console, configure your default project with: `runai config project cvlab`
 * Test if you see the lab's jobs `runai list jobs`
 
-### Job management
+### Submit jobs
 
 * Submit jobs with `runai submit` [(doc)](https://docs.run.ai/Researcher/cli-reference/runai-submit/).  
 Our [runai submit script](doc/runai_one.sh) can make that simple.
@@ -70,6 +70,11 @@ For direct use I recommend `ic-registry.epfl.ch/cvlab/lis/lab-python-ml:cuda10` 
 
 **Volume mounts**: The default volume mounts in the script are for CVLAB (cvlabdata volumes). Please change them if you are in a different lab.
 
+**Training vs interactive**: By default [jobs are *training* mode](https://docs.run.ai/Researcher/Walkthroughs/walkthrough-train/), which means they can use GPUs beyond the lab's quota of 28, but can be stopped and restarted (so its worth checkpointing etc). Jobs can be made *interactive* (non-preemptible) with the `--interactive` option of `runai submit`, but they are stopped after 12 hours, and there is a limited number of those allowed in the lab, so please do not create too many simultaneously.
+
+
+### Manage and connect
+
 * List jobs in the lab: `runai list jobs`
 
 * Find out the status of your job `runai describe job jobname`
@@ -80,7 +85,8 @@ For direct use I recommend `ic-registry.epfl.ch/cvlab/lis/lab-python-ml:cuda10` 
 
 * Run an interactive console inside the container `runai bash jobname`.
 
-**Training vs interactive**: By default [jobs are *training* mode](https://docs.run.ai/Researcher/Walkthroughs/walkthrough-train/), which means they can use GPUs beyond the lab's quota of 28, but can be stopped and restarted (so its worth checkpointing etc). Jobs can be made *interactive* (non-preemptible) with the `--interactive` option of `runai submit`, but they are stopped after 12 hours, and there is a limited number of those allowed in the lab, so please do not create too many simultaneously.
+* Forward ports between the container and your machine, for example for jupyter:
+`kubectl port-forward jobname-0-0 8888:8888`
 
 
 ### Asking the admins for help

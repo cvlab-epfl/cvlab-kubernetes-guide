@@ -30,4 +30,10 @@ sleep 1
 
 runai describe job $arg_job_name
 
+echo ""
+echo "Connect - terminal:"
+echo "	runai bash $arg_job_name"
+echo "Connect - jupyter:"
+echo "	kubectl port-forward $arg_job_name-0-0 8888:8888"
+
 #  --pvc runai-pv-cvlabdata1:/cvlabdata1 \
