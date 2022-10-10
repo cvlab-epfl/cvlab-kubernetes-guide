@@ -40,11 +40,10 @@ RUN python -c "import imageio; imageio.plugins.freeimage.download()"
 ENV TORCH_MODEL_ZOO /cvlabsrc1/cvlab/pytorch_model_zoo/models
 ENV TORCH_HOME /cvlabsrc1/cvlab/pytorch_model_zoo 
 # install pytorch for cuda11
+
 RUN pip --no-cache-dir install \
-	torch==1.10.1+cu113 \
-	torchvision==0.11.2+cu113 \
-	torchaudio==0.10.1+cu113 \
-	 -f https://download.pytorch.org/whl/cu113/torch_stable.html \
+	torch torchvision torchaudio \
+	--extra-index-url https://download.pytorch.org/whl/cu113 \
 	&& pip --no-cache-dir install tensorboard \
 	&& pip --no-cache-dir install --no-deps kornia 
 
