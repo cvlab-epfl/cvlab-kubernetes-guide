@@ -17,12 +17,13 @@ arg_gpu=$2
 # remove newlines from cmd
 arg_cmd=`echo $3 | tr '\n' ' '`
 
-MY_WORK_DIR="/cvlabdata2/home/yourname/something"
 CLUSTER_USER=yourname # find this by running `id -un` on iccvlabsrv
 CLUSTER_USER_ID=????? # find this by running `id -u` on iccvlabsrv
 CLUSTER_GROUP_NAME=CVLAB-unit # find this by running `id -gn` on iccvlabsrv
 CLUSTER_GROUP_ID=11166 # find this by running `id -g` on iccvlabsrv
+
 MY_IMAGE="ic-registry.epfl.ch/cvlab/lis/lab-python-ml:cuda11"
+MY_WORK_DIR="/cvlabdata2/home/$CLUSTER_USER"
 
 echo "Job [$arg_job_name] gpu $arg_gpu -> [$arg_cmd]"
 

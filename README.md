@@ -30,22 +30,33 @@ https://docs.run.ai/Administrator/Researcher-Setup/cli-install/
 * In a console, configure your default project with: `runai config project cvlab`
 * Test if you see the lab's jobs `runai list jobs`
 
-### Submit jobs
+### Quick-start scripts
+
+We have scripts for launching jobs with sensible defaults which should serve you for most use cases.
+* Download scripts: [runai_one.sh](script/runai_one.sh), [runai_interactive.sh](script/runai_interactive.sh)
+
+* Edit the scripts to fill in `CLUSTER_USER`, `CLUSTER_USER_ID` values for your EPFL cluster account, and `MY_WORK_DIR` if you want to change the directory where the job runs.
+
+* Submit jobs running a command with `runai_one.sh`:
+  - `bash runai_one.sh job_name num_gpu "command"`
+
+  - `bash runai_one.sh name-hello-1 1 "python hello.py"`  
+  creates a job named `name-hello-1`, **uses 1 GPU**, enters `MY_WORK_DIR` directory and runs `python hello.py`  
+
+  - `bash runai_one.sh name-hello-2 0.5 "python hello_half.py"`  
+  creates a job named `name-hello-2`, receives **half of a GPUs memory** (2 such jobs can fit on one GPU!), enters `MY_WORK_DIR` directory and runs `python hello_half.py`
+
+* Submit an interactive job with `bash runai_interactive.sh`, the job will be named `yourname-inter` and
+  has **interactive** priority, uses 0.5 GPU (customizable), starts a jupyter server at port 8888 with default password `hello`, runs for 8 hours.
+  - Connect to the jupyter server: `kubectl port-forward yourname-inter-0-0 8888:8888`, open [localhost:8888](http://localhost:8888), default password is `hello`.
+  - Connect in the console: `runai bash yourname-inter`.
+  - Once the interactive job has finished, delete it to make starting a new one possible: `runai delete yourname-inter`
+
+### Detailed job management
 
 * Submit jobs with `runai submit` [(doc)](https://docs.run.ai/Researcher/cli-reference/runai-submit/).  
-Our [runai submit script](doc/runai_one.sh) can make that simple.
-First, fill in `MY_WORK_DIR`, `CLUSTER_USER`, `CLUSTER_USER_ID` in the script to match your user.
-Then submit jobs like this:
-    - `bash runai_one.sh job_name num_gpu "command"`
+Our [runai submit script](script/runai_one.sh) uses it in the following way:
 
-    - `bash runai_one.sh name-hello-1 1 "python hello.py"`  
-	  creates a job named `name-hello-1`, **uses 1 GPU**, enters `MY_WORK_DIR` directory and runs `python hello.py`  
-	  
-    - `bash runai_one.sh name-hello-2 0.5 "python hello_half.py"`  
-	  creates a job named `name-hello-2`, receives **half of a GPUs memory** (2 such jobs can fit on one GPU!), enters `MY_WORK_DIR` directory and runs `python hello_half.py`
-
-
-Here is how it uses the submit command:
 ```bash
 runai submit $arg_job_name \
 	-i $MY_IMAGE \
