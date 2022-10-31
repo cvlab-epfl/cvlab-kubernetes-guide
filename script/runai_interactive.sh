@@ -54,11 +54,15 @@ runai submit $arg_job_name \
 	-e JUPYTER_CONFIG_DIR="$JUPYTER_CONFIG_DIR" \
 	--command -- /opt/lab/setup_and_run_command.sh "$MY_CMD"
 
-runai describe job $arg_job_name
 
-echo ""
-echo "Connect - terminal:"
-echo "	runai bash $arg_job_name"
-echo "Connect - jupyter:"
-echo "	kubectl port-forward $arg_job_name-0-0 8888:8888"
-echo "	open in browser: http://localhost:8888 , default password 'hello'"
+# check if succeeded
+if [ $? -eq 0 ]; then
+	runai describe job $arg_job_name
+
+	echo ""
+	echo "Connect - terminal:"
+	echo "	runai bash $arg_job_name"
+	echo "Connect - jupyter:"
+	echo "	kubectl port-forward $arg_job_name-0-0 8888:8888"
+	echo "	open in browser: http://localhost:8888 , default password 'hello'"
+fi

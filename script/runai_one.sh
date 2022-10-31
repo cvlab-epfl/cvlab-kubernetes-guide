@@ -41,7 +41,8 @@ runai submit $arg_job_name \
 	-e TORCH_HOME="/cvlabsrc1/cvlab/pytorch_model_zoo" \
 	--command -- /opt/lab/setup_and_run_command.sh "cd $MY_WORK_DIR && $arg_cmd"
 
-sleep 1
-
-runai describe job $arg_job_name
-
+# check if succeeded
+if [ $? -eq 0 ]; then
+	sleep 1
+	runai describe job $arg_job_name
+fi
