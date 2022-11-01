@@ -15,7 +15,7 @@ Things to download and put in $PATH:
     https://github.com/helm/helm/releases
     or
     brew install helm
-* kubectl (most probably already there)
+* kubectl https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
 
 More on the CLI installation:
 https://docs.run.ai/Administrator/Researcher-Setup/cli-install/
