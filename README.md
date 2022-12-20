@@ -10,7 +10,7 @@ or you need a new image to be built, please let me know or open an issue here.
 
 Things to download and put in $PATH:
 
-* runai [linux](runai-epfl.iccluster.epfl.ch/cli/linux), [mac](runai-epfl.iccluster.epfl.ch/cli/darwin)
+* runai [linux](http://runai-epfl.iccluster.epfl.ch/cli/linux), [mac](http://runai-epfl.iccluster.epfl.ch/cli/darwin)
 * helm
     https://github.com/helm/helm/releases
     or
@@ -58,12 +58,15 @@ We have scripts for launching jobs with sensible defaults which should serve you
 Our [runai submit script](script/runai_one.sh) uses it in the following way:
 
 ```bash
+
+runai_project="cvlab-$CLUSTER_USER" # per-user runai projects now
+
 runai submit $arg_job_name \
 	-i $MY_IMAGE \
 	--gpu $arg_gpu \
-	--pvc runai-pv-cvlabdata1:/cvlabdata1 \
-	--pvc runai-pv-cvlabdata2:/cvlabdata2 \
-	--pvc runai-pv-cvlabsrc1:/cvlabsrc1 \
+	--pvc runai-$runai_project-cvlabdata1:/cvlabdata1 \
+	--pvc runai-$runai_project-cvlabdata2:/cvlabdata2 \
+	--pvc runai-$runai_project-cvlabsrc1:/cvlabsrc1 \
 	--large-shm \
 	-e CLUSTER_USER=$CLUSTER_USER \
 	-e CLUSTER_USER_ID=$CLUSTER_USER_ID \
@@ -90,7 +93,7 @@ For direct use I recommend `ic-registry.epfl.ch/cvlab/lis/lab-python-ml:cuda10` 
 
 * Find out the status of your job `runai describe job jobname`
 
-* Stop running jobs with `runai delete jobname`. Also if you want to submit another job with the same name, you need to delete the existing one which occupies the name.
+* Stop running jobs with `runai delete job jobname`. Also if you want to submit another job with the same name, you need to delete the existing one which occupies the name.
 
 * View logs `runai logs jobname`. Add `--tail 64` to see 64 latest lines (or other number)
 
