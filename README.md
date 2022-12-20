@@ -10,16 +10,16 @@ or you need a new image to be built, please let me know or open an issue here.
 
 Things to download and put in $PATH:
 
-* runai https://github.com/run-ai/runai-cli/releases
+* runai [linux](runai-epfl.iccluster.epfl.ch/cli/linux), [mac](runai-epfl.iccluster.epfl.ch/cli/darwin)
 * helm
     https://github.com/helm/helm/releases
     or
     brew install helm
 * kubectl https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
 
+Make sure the binaries have permission to execute (e.g. `chmod +x some/place/runai`).
 More on the CLI installation:
 https://docs.run.ai/Administrator/Researcher-Setup/cli-install/
-
 
 ### Login
 
@@ -27,7 +27,7 @@ https://docs.run.ai/Administrator/Researcher-Setup/cli-install/
 * Connect to <https://app.run.ai> and you make sure the user/password/web-authentication works.
 * Download the config file: <https://icitdocs.epfl.ch/download/attachments/3211266/config> and place it in `~/.kube/`. If the download link changes, it is likely to be listed [here](https://icitdocs.epfl.ch/display/clusterdocs/Getting+Started+with+RunAI+SAML).
 * In a console, to login to RunAI, run: `runai login`
-* In a console, configure your default project with: `runai config project cvlab`
+* In a console, configure your default project with: `runai config project cvlab-yourname`
 * Test if you see the lab's jobs `runai list jobs`
 
 ### Quick-start scripts

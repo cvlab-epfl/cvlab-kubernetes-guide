@@ -35,6 +35,7 @@ MY_CMD="cd $MY_WORK_DIR && timeout --preserve-status --kill-after=1m 8h jupyter 
 
 arg_job_suffix=$1
 arg_job_name="$CLUSTER_USER-inter$arg_job_suffix"
+runai_project="cvlab-$CLUSTER_USER" # per-user runai projects now
 
 echo "Job [$arg_job_name] gpu $MY_GPU_AMOUNT"
 
@@ -42,9 +43,9 @@ runai submit $arg_job_name \
 	-i $MY_IMAGE \
 	--interactive \
 	--gpu $MY_GPU_AMOUNT \
-	--pvc runai-pv-cvlabdata1:/cvlabdata1 \
-	--pvc runai-pv-cvlabdata2:/cvlabdata2 \
-	--pvc runai-pv-cvlabsrc1:/cvlabsrc1 \
+	--pvc runai-$runai_project-cvlabdata1:/cvlabdata1 \
+	--pvc runai-$runai_project-cvlabdata2:/cvlabdata2 \
+	--pvc runai-$runai_project-cvlabsrc1:/cvlabsrc1 \
 	--large-shm \
 	-e CLUSTER_USER=$CLUSTER_USER \
 	-e CLUSTER_USER_ID=$CLUSTER_USER_ID \
@@ -52,7 +53,7 @@ runai submit $arg_job_name \
 	-e CLUSTER_GROUP_ID=$CLUSTER_GROUP_ID \
 	-e TORCH_HOME="/cvlabsrc1/cvlab/pytorch_model_zoo" \
 	-e JUPYTER_CONFIG_DIR="$JUPYTER_CONFIG_DIR" \
-	--command -- /opt/lab/setup_and_run_command.sh "$MY_CMD"
+	--command -- "/opt/lab/setup_and_run_command.sh '$MY_CMD'"
 
 
 # check if succeeded
