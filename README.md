@@ -31,26 +31,37 @@ https://docs.run.ai/Administrator/Researcher-Setup/cli-install/
 * Test if you see the lab's jobs `runai list jobs`
 
 ### Quick-start scripts
-
 We have scripts for launching jobs with sensible defaults which should serve you for most use cases.
+
+
+#### Script setup
+
 * Download scripts: [runai_one.sh](script/runai_one.sh), [runai_interactive.sh](script/runai_interactive.sh)
 
 * Edit the scripts to fill in `CLUSTER_USER`, `CLUSTER_USER_ID` values for your EPFL cluster account, and `MY_WORK_DIR` if you want to change the directory where the job runs.
 
-* Submit jobs running a command with `runai_one.sh`:
-  - `bash runai_one.sh job_name num_gpu "command"`
 
-  - `bash runai_one.sh name-hello-1 1 "python hello.py"`  
-  creates a job named `name-hello-1`, **uses 1 GPU**, enters `MY_WORK_DIR` directory and runs `python hello.py`  
+#### Batch job
+Submit jobs running a command with `runai_one.sh`. These jobs have *training* priority.
 
-  - `bash runai_one.sh name-hello-2 0.5 "python hello_half.py"`  
-  creates a job named `name-hello-2`, receives **half of a GPUs memory** (2 such jobs can fit on one GPU!), enters `MY_WORK_DIR` directory and runs `python hello_half.py`
+- `bash runai_one.sh job_name num_gpu "command"`
 
-* Submit an interactive job with `bash runai_interactive.sh`, the job will be named `yourname-inter` and
-  has **interactive** priority, uses 0.5 GPU (customizable), starts a jupyter server at port 8888 with default password `hello`, runs for 8 hours.
-  - Connect to the jupyter server: `kubectl port-forward yourname-inter-0-0 8888:8888`, open [localhost:8888](http://localhost:8888), default password is `hello`.
-  - Connect in the console: `runai bash yourname-inter`.
-  - Once the interactive job has finished, delete it to make starting a new one possible: `runai delete yourname-inter`
+- `bash runai_one.sh name-hello-1 1 "python hello.py"`  
+creates a job named `name-hello-1`, **uses 1 GPU**, enters `MY_WORK_DIR` directory and runs `python hello.py`  
+
+- `bash runai_one.sh name-hello-2 0.5 "python hello_half.py"`  
+creates a job named `name-hello-2`, receives **half of a GPUs memory** (2 such jobs can fit on one GPU!), enters `MY_WORK_DIR` directory and runs `python hello_half.py`
+
+
+#### Interactive session
+Submit an interactive job with `bash runai_interactive.sh`, the job will be named `yourname-inter` and
+has **interactive** priority, uses 0.5 GPU (customizable), starts a jupyter server at port 8888 with default password `hello`, runs for 8 hours.
+
+- Connect to the jupyter server: `kubectl port-forward yourname-inter-0-0 8888:8888`, open [localhost:8888](http://localhost:8888), default password is `hello`.
+- Connect in the console: `runai bash yourname-inter`.
+- Once the interactive job has finished, delete it to make starting a new one possible: `runai delete yourname-inter`
+
+
 
 ### Detailed job management
 
@@ -143,13 +154,6 @@ Docker *containers* are the processses running on a docker host (that is our ser
 [Kubernetes](https://kubernetes.io/) is a system that organizes running a big number of docker containers on a multi-machine cluster.
 The rationale is that Kubernetes will allocate resources when we need to run a job and release them later, leading to a more efficient usage than when machines are assigned to people - we do not pay for the resources when the jobs are not running.
 
-## Setup
-
-To communicate with the Kubernetes server, we need to:
-
-* [install kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-* get the config files from [IC admins](https://www.epfl.ch/schools/ic/it/en/it-service-ic-it/) (`user.config`, `user.crt`, `user.key`), copy them to `~/.kube` and rename `user.config` to `config`.
-
 ## Pre-built images
 
 I made some base images that should be useful to everyone. It should be easy to start using those, without having to build custom images.
@@ -166,69 +170,8 @@ More about images [here](./images).
 
 The GPUs we have at the cluster work faster with [half-precision training](https://pytorch.org/blog/accelerating-training-on-nvidia-gpus-with-pytorch-automatic-mixed-precision/).
 
-## Defining your containers
 
-We tell Kubernetes to run our containers by creating Pods. A [pod](https://kubernetes.io/docs/concepts/workloads/pods/pod/) is a definition of a group of containers that should be run.
-
-An example pod file is shown in [pods/example-test.yaml](./pods/example-test.yaml).
-
-First we specify the name of the pod - we will use this name to refer to it by different commands.
-Please also provide your user name and desired priority of the job, these are used for resource allocation.
-
-``` yaml
-metadata:
-  name: username-example-test
-  labels:
-    user: your-username
-    priority: "1" # job with higher priority number takes precedence
-```
-
-Then we say what containers should be running in that pod, most importantly what image to start from and what command to run.
-
-``` yaml
-spec:
-  restartPolicy: Never # once it finishes, do not restart
-  containers:
-    - name: base-test
-      image: ic-registry.epfl.ch/cvlab/lis/lab-base:cpu
-      command: ["/opt/lab/setup_and_wait.sh"]
-```
-
-We set the [`restartPolicy`](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy)
-to `Never` so that once the job is finished, it releases the resources and does not restart.
-By default, Kubernetes restarts containers when they finish.
-We could also use a Kubernetes [Job](https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/).
-
-Futher we specify the environment variables, for example:
-
-``` yaml
-env:
-  - name: JUPYTER_CONFIG_DIR
-    value: "/cvlabdata2/home/lis/kubernetes_example/.jupyter"
-  ...
-```
-
-The variables concerning users and groups, as well as `volumes` are described in the section about [cvlabdata](#connection-to-cvlabdata).
-
-The `ports` entry is described [later](#network-communication-port-forwarding).
-
-### GPU
-
-To request a GPU, add this to the container:
-
-``` yaml
-      resources:
-        limits:
-          nvidia.com/gpu: 1 # requesting 1 GPU
-```
-
-It may happen that the GPUs are all occupied, you can check how many are used:
-
-```
-kubectl describe quota --namespace=cvlab
-```
-
-### External storage
+## External storage
 
 By default the container only has access to its internal file system. To read or save some data, we will mount the cvlabdata drives.
 
@@ -238,13 +181,13 @@ This is achieved by adding this to your pod configuration (pod is the top-level 
   volumes:
     - name: cvlabsrc1
       persistentVolumeClaim:
-        claimName: pv-cvlabsrc1
+        claimName: runai-cvlab-yourname-cvlabsrc1
     - name: cvlabdata1
       persistentVolumeClaim:
-        claimName: pv-cvlabdata1
+        claimName: runai-cvlab-yourname-cvlabdata1
     - name: cvlabdata2
       persistentVolumeClaim:
-        claimName: pv-cvlabdata2
+        claimName: runai-cvlab-yourname-cvlabdata2
 ```
 
 and this to each of your containers:
@@ -259,7 +202,7 @@ and this to each of your containers:
           name: cvlabdata2
 ```
 
-#### CVLabData write permissions
+### CVLabData write permissions
 
 To have write permissions to cvlabdata, we need to present our user IDs from the cluster.
 Run the `id` command on iccluster, you should get something like this:
@@ -291,7 +234,7 @@ The images which have this feature so far are:
 * `ic-registry.epfl.ch/cvlab/lis/lab-python-ml:py38src`
 * and anything built on top of those
 
-### Startup Command
+## Startup Command
 
 The `command` field specifies the program to run when the container starts. Also when this command finishes, the container will shut down.
 
@@ -322,7 +265,7 @@ command:
 You can run those examples in `/cvlabdata2/home/lis/kubernetes_example`, I will clear it out periodically.
 
 
-#### Timeout
+### Timeout
 
 If a process does not finish by itself, I recommend limiting its lifetime with [timeout](https://www.tecmint.com/run-linux-command-with-time-limit-and-timeout/). The following command will automatically shut down Jupyter after 4 hours:
 
@@ -330,19 +273,8 @@ If a process does not finish by itself, I recommend limiting its lifetime with [
 timeout 4h jupyter lab --ip=0.0.0.0 --no-browser --notebook-dir=/cvlabdata2/home/lis/kubernetes_example"
 ```
 
-## Running the containers
 
-We list, start and stop pods using the *kubectl* command
-
-* `kubectl get pods` \- list pods which currently exist
-* `kubectl get pods --field-selector=status.phase=Running` \- list pods which are currently running
-* `kubectl create -f pod_definition_file.yaml` \- create a new pod according to your specification
-* `kubectl delete pod pod_name` \- delete your pod \(make sure you delete containers you don't use anymore\)
-* `kubectl describe pods/pod_name` \- show information about a pod\, including the output logs\, useful to diagnose why it isn't working\.
-* `kubectl logs pod_name` \- output logs from a pod
-* `kubectl describe quota --namespace=cvlab` \- show how many GPUs are used
-
-#### Connecting an interactive console to the container
+### Connecting an interactive console to the container
 
 Once a pod is running, we can connect to it and run commands inside:
 
@@ -362,7 +294,7 @@ This can be combined into a single convenient command:
 kubectl exec -it pod-name -- bash -c "su youtuser -c tmux"
 ```
 
-#### Diagnosing problems
+### Diagnosing problems
 
 If the job is not running as intended, you can see its status:
 
@@ -376,27 +308,6 @@ and check for errors by viewing the the output of your process:
 kubectl logs pod_name
 ```
 
-## Resource allocation in CVLAB
-
-We want to ensure that everyone can use at least one GPU.
-We order the jobs and the position in the queue will decide which jobs will be allowed to run in case we have more requests than available resources.
-
-* A job using one person's 1st GPU has precedence over any person's 2nd GPU job. A 2nd GPU job is above any 3rd GPU job and so on.
-* Among the jobs of a single user, we order them according to user-set priority (in the label `priority`) with higher numbers being more important: priority `+1` is before priority `-1`, the default is 0.
-If priority is equal, the earlier job takes precedence.
-
-The queue is displayed at [http://iccvlabsrv13.iccluster.epfl.ch:5336/](http://iccvlabsrv13.iccluster.epfl.ch:5336/).
-If all of the 30 GPUs are occupied, and you want to run your **1st** job, you can kill the last job in the queue. In that case please notify the owner.
-
-Please remember to specify your user name and priority in the pod config.
-
-``` yaml
-metadata:
-  name: username-example-test
-  labels:
-    user: your-username
-    priority: "1" # job with higher priority number takes precedence
-```
 
 ## Running multiple experiments in one container
 
