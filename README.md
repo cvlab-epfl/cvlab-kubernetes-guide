@@ -61,7 +61,8 @@ has **interactive** priority, uses 0.5 GPU (customizable), starts a jupyter serv
 - Connect in the console: `runai bash yourname-inter`.
 - Once the interactive job has finished, delete it to make starting a new one possible: `runai delete yourname-inter`
 
-
+#### Remote work with `vscode`
+There is a [separate tutorial](doc/vscode.md) on setting `vscode` up to work directly on the running node, allowing for easy (and GPU-accelerated) execution and debugging.
 
 ### Detailed job management
 
