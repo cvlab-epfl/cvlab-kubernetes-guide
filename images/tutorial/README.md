@@ -27,7 +27,8 @@ sudo apt install docker.io
 `docker` may need `sudo` to operate correctly.
 
 ### Image repository login
-In any case you need to log in to our docker image repository, which is where `runai` can download images from.
+In any case you need to log in to our docker image repository, which is where `runai` can download images from. The user name and password are your gaspar/gaspar_password.
+
 ```
 docker login ic-registry.epfl.ch
 ```
