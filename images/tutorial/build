@@ -1,0 +1,46 @@
+#! /bin/bash
+
+# This script builds the "base" and "pytorch" images. The reason for this separation is
+# that the "base" image is large and changes rarely, while the "pytorch" image is smaller
+# but likely to update with each release.
+
+# We pick the CUDA image based on the CUDA version we want to use. The CUDA and CUDNN version
+# are NOT hardware independent because only certain versions of CUDA are supported with certain
+# drivers, and the drivers are NOT handled by Docker.
+# To know the driver versions, execute `runai exec -it name_of_job -- nvidia-smi` where name_of_job
+# is an already-running job (if you don't have one, just ask someone else, the drivers should be the same).
+# Then you can consult the table here:
+# https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html#id4
+# to find out the CUDA version. You can then browse the available images here:
+# https://hub.docker.com/r/nvidia/cuda/tags
+CUDA_IMG="nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04"
+
+# This command downloads the base image from the registry
+docker pull $CUDA_IMG
+
+# The registry is where the images will be pushed, we give the path to your own subregistry
+REGISTRY="ic-registry.epfl.ch/cvlab/your_gaspar"
+# We bind the build command to a variable so that we can easily add flags
+BUILD="docker build --network=host"
+
+# In general the command to build an image is `docker build <path_to_dockerfile> -t <image_name>`.
+# We also want to add the `BASE_IMG` variable to tell it where to find the base image and.
+
+# Since we will be using an image name 3 times: to name the image, to push it to the registry,
+# and to pass it as an argument to the next image, we bind it to a variable.
+BASE=$REGISTRY/base:ssh
+$BUILD base \
+--build-arg BASE_IMG=$CUDA_IMG \
+-t $BASE #\
+#--network=host
+
+# This command pushes the image to the registry. Without it, the image will only be available locally.
+docker push $BASE
+
+PYTORCH=$REGISTRY/pytorch:torch210
+$BUILD pytorch \
+--build-arg BASE_IMG=$BASE \
+-t $PYTORCH #\
+#--network="host"
+
+docker push $PYTORCH
