@@ -37,7 +37,7 @@ To log in you use the following:
 docker login ic-registry.epfl.ch
 ```
 
-The user name and password are your gaspar/gaspar_password.
+The user name and password are your gaspar/gaspar_password. At this point you should be able to execute the `build` script inside this directory to build your two images.
 
 ## Dockerfiles
 

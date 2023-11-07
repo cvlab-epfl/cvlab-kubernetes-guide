@@ -28,13 +28,15 @@ BUILD="docker build --network=host"
 
 # Since we will be using an image name 3 times: to name the image, to push it to the registry,
 # and to pass it as an argument to the next image, we bind it to a variable.
-BASE=$REGISTRY/base:ssh
-$BUILD base --build-arg BASE_IMG=$CUDA_IMG -t $BASE
+# ! Dockerfile to be built is specified by the name of the directory it is in. So below we say `base`
+# and thus build the Dockerfile at `base/Dockerfile`.
+BASE_REGISTRY_URL=$REGISTRY/base:ssh
+$BUILD base --build-arg BASE_IMG=$CUDA_IMG -t $BASE_REGISTRY_URL
 
-# This command pushes the image to the registry. Without it, the image will only be available locally.
-docker push $BASE
+# This command pushes the image to the registry. Without it, the image would only be available locally.
+docker push $BASE_REGISTRY_URL
 
-PYTORCH=$REGISTRY/pytorch:torch210
-$BUILD pytorch --build-arg BASE_IMG=$BASE -t $PYTORCH
+PYTORCH_REGISTRY_URL=$REGISTRY/pytorch:torch210
+$BUILD pytorch --build-arg BASE_IMG=$BASE -t $PYTORCH_REGISTRY_URL
 
-docker push $PYTORCH
+docker push $PYTORCH_REGISTRY_URL
