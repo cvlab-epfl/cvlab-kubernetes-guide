@@ -93,7 +93,7 @@ Many operations result in creating various kinds of caches, which unless cleaned
 ```
 pip install --no-cache-dir some-package
 ```
-Similarly, this is the reason for the shenanigans on line 9 of [base Dockerfile](./base/Dockerfile): 
+Similarly, this is the reason for the shenanigans in [base Dockerfile](./base/Dockerfile): 
 ```
 RUN sed 's@archive.ubuntu.com@ubuntu.ethz.ch@' -i /etc/apt/sources.list \
         && apt-get update \

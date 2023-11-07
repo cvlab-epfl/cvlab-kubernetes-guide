@@ -13,7 +13,7 @@
 # https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html#id4
 # to find out the CUDA version. You can then browse the available images here:
 # https://hub.docker.com/r/nvidia/cuda/tags
-CUDA_IMG="nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04"
+CUDA_IMG="nvidia/cuda:12.2.2-cudnn8-devel-ubuntu22.04"
 
 # This command downloads the base image from the registry
 docker pull $CUDA_IMG
@@ -33,7 +33,8 @@ BUILD="docker build --network=host"
 BASE_REGISTRY_URL=$REGISTRY/base:ssh
 $BUILD base --build-arg BASE_IMG=$CUDA_IMG -t $BASE_REGISTRY_URL
 
-# This command pushes the image to the registry. Without it, the image would only be available locally.
+# This command pushes the image to the registry and accessible by RunAI.
+# Without it, the image would only be available locally.
 docker push $BASE_REGISTRY_URL
 
 PYTORCH_REGISTRY_URL=$REGISTRY/pytorch:torch210
