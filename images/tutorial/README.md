@@ -125,3 +125,7 @@ to your Dockerfile to set the variable. This line is not included in the tutoria
 export PIP_CACHE_DIR=/cvlabdata2/home/tyszkiew/pip_cache_dir
 ```
 You can periodically clear the cache if it gets too full.
+
+
+## Troubleshooting
+If this guide is insufficient to solve your problem, ask around the lab and then contact `support-icit@epfl.ch` as they are the team supporting our compute infrastructure.
